@@ -3,10 +3,9 @@ import { getConnection } from "./../database/connection";
 const getContracts = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM `contracts`");
+    const result = await connection.query("SELECT c.*, cl.name as client, p.name as plan, p.price, a.address FROM `contracts` as c, `clients` as cl, `plans` as p, `addresses` as a WHERE cl.id = c.client_id AND p.id=c.plan_id AND a.id=cl.address_id ORDER BY c.id ASC;");
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -22,7 +21,6 @@ const getContract = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -33,7 +31,6 @@ const addContract = async (req, resp) => {
       client_id,
       plan_id,
       server_id,
-      state,
       ip,
       netmask,
       mac_address,
@@ -46,16 +43,14 @@ const addContract = async (req, resp) => {
       client_id === undefined ||
       plan_id === undefined ||
       server_id === undefined ||
-      state === undefined ||
       ip === undefined ||
       netmask === undefined ||
       mac_address === undefined ||
       details === undefined ||
-      node_id === undefined ||
       created_at === undefined ||
       updated_at === undefined
     ) {
-      resp.status(400).json({
+      resp.json({
         message: "Error al procesar la información enviada :(...",
       });
     }
@@ -64,12 +59,10 @@ const addContract = async (req, resp) => {
       client_id,
       plan_id,
       server_id,
-      state,
       ip,
       netmask,
       mac_address,
       details,
-      node_id,
       created_at,
       updated_at,
     };
@@ -80,7 +73,6 @@ const addContract = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -97,7 +89,6 @@ const updateContract = async (req, resp) => {
       netmask,
       mac_address,
       details,
-      node_id,
       created_at,
       updated_at,
     } = req.body;
@@ -110,11 +101,10 @@ const updateContract = async (req, resp) => {
       netmask === undefined ||
       mac_address === undefined ||
       details === undefined ||
-      node_id === undefined ||
       created_at === undefined ||
       updated_at === undefined
     ) {
-      resp.status(400).json({
+      resp.json({
         message: "Error al procesar la información enviada :(...",
       });
     }
@@ -128,7 +118,6 @@ const updateContract = async (req, resp) => {
       netmask,
       mac_address,
       details,
-      node_id,
       created_at,
       updated_at,
     };
@@ -139,7 +128,6 @@ const updateContract = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -154,7 +142,6 @@ const deleteContract = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.state(500);
     resp.send(error.message);
   }
 };

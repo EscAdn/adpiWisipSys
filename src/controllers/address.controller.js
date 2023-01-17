@@ -1,14 +1,13 @@
 import { getConnection } from "./../database/connection";
 
-const error = (resp, error) => {
-  resp.status(500);
+const error = (resp, error) => {  
   resp.send(error.message);
 };
 
 const getAddresses = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT `id`, `address` as name, `created_at`, `uodated_at` FROM `addresses`");
+    const result = await connection.query("SELECT * FROM `addresses`");
     resp.json(result);
   } catch (e) {
     error(resp, e);
@@ -40,9 +39,10 @@ const addAddress = async (req, resp) => {
       created_at === undefined ||
       updated_at === undefined
     ) {
-      resp.status(400).json({
-        message: "Error al procesar la información enviada :(...",
+      resp.json({
+        message: `Error al procesar la información enviada :(...`
       });
+      return;
     }
 
     const data = { address, created_at, updated_at };
@@ -63,7 +63,7 @@ const updateAddress = async (req, resp) => {
     const { address, updated_at } = req.body;
 
     if (address === undefined || updated_at === undefined) {
-      resp.status(400).json({
+      resp.json({
         message: "Error al procesar la información enviada :(...",
       });
     }
@@ -85,7 +85,7 @@ const deleteAddress = async (req, resp) => {
     const { id } = req.params;
 
     const connection = await getConnection();
-    const result = await connection.query("DELETE FROM `addresses` id = ?", id);
+    const result = await connection.query("DELETE FROM `addresses` WHERE id = ?", id);
     resp.json(result);
   } catch (e) {
     error(resp, e);

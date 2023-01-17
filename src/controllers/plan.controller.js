@@ -6,7 +6,6 @@ const getPlans = async (req, resp) => {
     const result = await connection.query("SELECT * FROM `plans`");
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -22,7 +21,6 @@ const getPlan = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -34,7 +32,6 @@ const addPlan = async (req, resp) => {
       ceil_down_mbps,
       ceil_up_mbps,
       price,
-      contracts_count,
       created_at,
       updated_at,
     } = req.body;
@@ -44,11 +41,10 @@ const addPlan = async (req, resp) => {
       ceil_down_mbps === undefined ||
       ceil_up_mbps === undefined ||
       price === undefined ||
-      contracts_count === undefined ||
       created_at === undefined ||
       updated_at === undefined
     ) {
-      resp.status(400).json({
+      resp.json({
         message: "Error al procesar la información enviada :(...",
       });
     }
@@ -57,7 +53,6 @@ const addPlan = async (req, resp) => {
       ceil_down_mbps,
       ceil_up_mbps,
       price,
-      contracts_count,
       created_at,
       updated_at,
     };
@@ -65,7 +60,6 @@ const addPlan = async (req, resp) => {
     const result = await connection.query("INSERT INTO `plans` SET ?", data);
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -78,8 +72,6 @@ const updatePlan = async (req, resp) => {
       ceil_down_mbps,
       ceil_up_mbps,
       price,
-      contracts_count,
-      created_at,
       updated_at,
     } = req.body;
 
@@ -88,11 +80,9 @@ const updatePlan = async (req, resp) => {
       ceil_down_mbps === undefined ||
       ceil_up_mbps === undefined ||
       price === undefined ||
-      contracts_count === undefined ||
-      created_at === undefined ||
       updated_at === undefined
     ) {
-      resp.status(400).json({
+      resp.json({
         message: "Error al procesar la información enviada :(...",
       });
     }
@@ -101,8 +91,6 @@ const updatePlan = async (req, resp) => {
       ceil_down_mbps,
       ceil_up_mbps,
       price,
-      contracts_count,
-      created_at,
       updated_at,
     };
     const connection = await getConnection();
@@ -112,7 +100,6 @@ const updatePlan = async (req, resp) => {
     ]);
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
@@ -127,7 +114,6 @@ const deletePlan = async (req, resp) => {
     );
     resp.json(result);
   } catch (error) {
-    resp.status(500);
     resp.send(error.message);
   }
 };
