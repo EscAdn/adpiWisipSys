@@ -89,9 +89,9 @@ const updateContract = async (req, resp) => {
       netmask,
       mac_address,
       details,
-      created_at,
       updated_at,
     } = req.body;
+    
     if (
       client_id === undefined ||
       plan_id === undefined ||
@@ -101,7 +101,6 @@ const updateContract = async (req, resp) => {
       netmask === undefined ||
       mac_address === undefined ||
       details === undefined ||
-      created_at === undefined ||
       updated_at === undefined
     ) {
       resp.json({
@@ -118,12 +117,11 @@ const updateContract = async (req, resp) => {
       netmask,
       mac_address,
       details,
-      created_at,
       updated_at,
     };
     const connection = await getConnection();
     const result = await connection.query(
-      "INSERT INTO `contracts` SET ? WHERE id = ?",
+      "UPDATE `contracts` SET ? WHERE id = ?",
       [data, id]
     );
     resp.json(result);
