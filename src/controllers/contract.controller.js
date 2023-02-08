@@ -30,7 +30,9 @@ const addContract = async (req, resp) => {
     const {
       client_id,
       plan_id,
+      day_cut,
       server_id,
+      state,
       ip,
       netmask,
       mac_address,
@@ -42,11 +44,14 @@ const addContract = async (req, resp) => {
     if (
       client_id === undefined ||
       plan_id === undefined ||
+      day_cut === undefined ||
       server_id === undefined ||
+      state === undefined ||
       ip === undefined ||
       netmask === undefined ||
       mac_address === undefined ||
       details === undefined ||
+      node_id === undefined ||
       created_at === undefined ||
       updated_at === undefined
     ) {
@@ -58,11 +63,14 @@ const addContract = async (req, resp) => {
     const data = {
       client_id,
       plan_id,
+      day_cut,
       server_id,
+      state,
       ip,
       netmask,
       mac_address,
       details,
+      node_id,
       created_at,
       updated_at,
     };
@@ -84,11 +92,13 @@ const updateContract = async (req, resp) => {
       client_id,
       plan_id,
       server_id,
+      day_cut,
       state,
       ip,
       netmask,
       mac_address,
       details,
+      node_id,
       updated_at,
     } = req.body;
     
@@ -112,11 +122,13 @@ const updateContract = async (req, resp) => {
       client_id,
       plan_id,
       server_id,
+      day_cut,
       state,
       ip,
       netmask,
       mac_address,
       details,
+      node_id,
       updated_at,
     };
     const connection = await getConnection();

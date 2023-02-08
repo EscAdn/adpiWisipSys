@@ -8,6 +8,6 @@ router.get("/", address.getAddresses);
 router.get("/:id", address.getAddress);
 router.post("/", address.addAddress);
 router.put("/:id", address.updateAddress);
-router.delete("/:id", address.deleteAddress);
+// router.delete(":id", address.deleteAddress);
 
 export default router;

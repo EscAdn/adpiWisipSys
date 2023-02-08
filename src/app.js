@@ -19,10 +19,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
-app.use("/api/address", addressRoute);
-app.use("/api/node", nodeRoute);
-app.use("/api/client", clientRoute);
-app.use("/api/plan", planRoute);
-app.use("/api/contract", contractRoute);
+app.use("/api/addresses", addressRoute);
+app.use("/api/nodes", nodeRoute);
+app.use("/api/clients", clientRoute);
+app.use("/api/plans", planRoute);
+app.use("/api/contracts", contractRoute);
 
 export default app;

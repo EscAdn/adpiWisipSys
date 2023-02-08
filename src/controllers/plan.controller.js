@@ -104,24 +104,24 @@ const updatePlan = async (req, resp) => {
   }
 };
 
-const deletePlan = async (req, resp) => {
-  try {
-    const { id } = req.params;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "DELETE FROM `plans` WHERE id = ?",
-      id
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
-};
+// const deletePlan = async (req, resp) => {
+//   try {
+//     const { id } = req.params;
+//     const connection = await getConnection();
+//     const result = await connection.query(
+//       "DELETE FROM `plans` WHERE id = ?",
+//       id
+//     );
+//     resp.json(result);
+//   } catch (error) {
+//     resp.send(error.message);
+//   }
+// };
 
 export const methods = {
   getPlans,
   getPlan,
   addPlan,
   updatePlan,
-  deletePlan,
+  // deletePlan,
 };

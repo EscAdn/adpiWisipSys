@@ -80,22 +80,23 @@ const updateAddress = async (req, resp) => {
   }
 };
 
-const deleteAddress = async (req, resp) => {
-  try {
-    const { id } = req.params;
+// No se necesita eliminar
+// const deleteAddress = async (req, resp) => {
+//   try {
+//     const { id } = req.params;
 
-    const connection = await getConnection();
-    const result = await connection.query("DELETE FROM `addresses` WHERE id = ?", id);
-    resp.json(result);
-  } catch (e) {
-    error(resp, e);
-  }
-};
+//     const connection = await getConnection();
+//     const result = await connection.query("DELETE FROM `addresses` WHERE id = ?", id);
+//     resp.json(result);
+//   } catch (e) {
+//     error(resp, e);
+//   }
+// };
 
 export const methods = {
   getAddresses,
   getAddress,
   addAddress,
   updateAddress,
-  deleteAddress,
+  // deleteAddress,
 };

@@ -79,24 +79,24 @@ const updateNode = async (req, resp) => {
   }
 };
 
-const deleteNode = async (req, resp) => {
-  try {
-    const { id } = req.params;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "DELETE FROM `nodes` WHERE id = ?",
-      id
-    );
-    resp.json(result);
-  } catch (e) {
-    resp.send(e.message);
-  }
-};
+// const deleteNode = async (req, resp) => {
+//   try {
+//     const { id } = req.params;
+//     const connection = await getConnection();
+//     const result = await connection.query(
+//       "DELETE FROM `nodes` WHERE id = ?",
+//       id
+//     );
+//     resp.json(result);
+//   } catch (e) {
+//     resp.send(e.message);
+//   }
+// };
 
 export const methods = {
   getNodes,
   getNode,
   addNode,
   updateNode,
-  deleteNode,
+  // deleteNode,
 };

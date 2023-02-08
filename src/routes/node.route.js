@@ -8,6 +8,6 @@ router.get("/", node.getNodes);
 router.get("/:id", node.getNode);
 router.post("/", node.addNode);
 router.put("/:id", node.updateNode);
-router.delete("/:id", node.deleteNode);
+// router.delete("/:id", node.deleteNode);
 
 export default router;
