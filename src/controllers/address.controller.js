@@ -7,7 +7,7 @@ const error = (resp, error) => {
 const getAddresses = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM `addresses`");
+    const result = await connection.query("SELECT `id`, `address` as name, `created_at`, `updated_at` FROM `addresses`");
     resp.json(result);
   } catch (e) {
     error(resp, e);
