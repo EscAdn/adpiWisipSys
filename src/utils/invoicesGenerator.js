@@ -1,0 +1,1 @@
+const generarFacturas = async (dia) => {};
