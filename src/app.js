@@ -1,11 +1,11 @@
-// 
+//
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// 
+//
 // En la BD mosificar created_at en address o nodes
 // agregar day_cut en contracts
-// 
+//
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// 
+//
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -18,7 +18,7 @@ import contractRoute from "./routes/contract.route";
 import paymentRoute from "./routes/payment.route";
 import invoiceRoute from "./routes/invoice.route";
 
-const port = 3020;
+const port = 3001;
 const app = express();
 
 app.use(cors());

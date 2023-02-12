@@ -1,9 +1,12 @@
 import { getConnection } from "./../database/connection";
+import moment from "moment";
 
 const getNodes = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT a.address, n.* FROM `nodes` as n, `addresses` as a WHERE a.id = n.address_id;");
+    const result = await connection.query(
+      "SELECT a.address, n.* FROM `nodes` as n, `addresses` as a WHERE a.id = n.address_id;"
+    );
     resp.json(result);
   } catch (e) {
     resp.send(e.message);
@@ -26,23 +29,14 @@ const getNode = async (req, resp) => {
 };
 
 const addNode = async (req, resp) => {
+  // Recibe address_id, details, ports
   try {
-    const { address_id, details, ports, created_at, updated_at } = req.body;
+    let data = req.body;
+    let hoy = moment().format("YYYY-MM-DD");
 
-    // Comprobación de información
-    if (
-      address_id === undefined ||
-      details === undefined ||
-      ports === undefined ||
-      created_at === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+    data.created_at = hoy;
+    data.updated_at = hoy;
 
-    const data = { address_id, details, ports, created_at, updated_at };
     const connection = await getConnection();
     const result = await connection.query("INSERT INTO `nodes` SET ?", data);
     resp.json(result);
@@ -52,22 +46,12 @@ const addNode = async (req, resp) => {
 };
 
 const updateNode = async (req, resp) => {
+  // Recibe address_id, details, ports
   try {
     const { id } = req.params;
-    const { address_id, details, ports, updated_at } = req.body;
-    // Comprobación de información
-    if (
-      address_id === undefined ||
-      details === undefined ||
-      ports === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-    const data = { address_id, details, ports, updated_at };
     const connection = await getConnection();
     const result = await connection.query("UPDATE `nodes` SET ? WHERE id = ?", [
       data,
@@ -79,24 +63,9 @@ const updateNode = async (req, resp) => {
   }
 };
 
-// const deleteNode = async (req, resp) => {
-//   try {
-//     const { id } = req.params;
-//     const connection = await getConnection();
-//     const result = await connection.query(
-//       "DELETE FROM `nodes` WHERE id = ?",
-//       id
-//     );
-//     resp.json(result);
-//   } catch (e) {
-//     resp.send(e.message);
-//   }
-// };
-
 export const methods = {
   getNodes,
   getNode,
   addNode,
   updateNode,
-  // deleteNode,
 };

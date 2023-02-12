@@ -1,9 +1,12 @@
+import moment from "moment/moment";
 import { getConnection } from "./../database/connection";
 
 const getClients = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT c.*, a.address FROM `clients` as c, `addresses` as a WHERE a.id = c.address_id ORDER BY c.id");
+    const result = await connection.query(
+      "SELECT c.*, a.address FROM `clients` as c, `addresses` as a WHERE a.id = c.address_id ORDER BY c.id"
+    );
     resp.json(result);
   } catch (e) {
     resp.send(e.message);
@@ -26,21 +29,10 @@ const getClient = async (req, resp) => {
 
 const addClient = async (req, resp) => {
   try {
-    const { name, telephone, address_id, created_at, updated_at } = req.body;
+    let data = req.body;
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-    if (
-      name === undefined ||
-      telephone === undefined ||
-      address_id === undefined ||
-      created_at === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-
-    const data = { name, telephone, address_id, created_at, updated_at };
     const connection = await getConnection();
     const result = await connection.query("INSERT INTO `clients` SET ?", data);
     resp.json(result);
@@ -52,20 +44,8 @@ const addClient = async (req, resp) => {
 const updateClient = async (req, resp) => {
   try {
     const { id } = req.params;
-    const { name, telephone, address_id, updated_at } = req.body;
-
-    if (
-      name === undefined ||
-      telephone === undefined ||
-      address_id === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-
-    const data = { name, telephone, address_id, updated_at };
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
     const connection = await getConnection();
     const result = await connection.query(
       "UPDATE `clients` SET ? WHERE id = ?",

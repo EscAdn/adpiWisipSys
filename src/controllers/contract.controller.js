@@ -1,9 +1,12 @@
+import moment from "moment/moment";
 import { getConnection } from "./../database/connection";
 
 const getContracts = async (req, resp) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT c.*, cl.name as client, p.name as plan, p.price, a.address FROM `contracts` as c, `clients` as cl, `plans` as p, `addresses` as a WHERE cl.id = c.client_id AND p.id=c.plan_id AND a.id=cl.address_id ORDER BY c.id ASC;");
+    const result = await connection.query(
+      "SELECT c.*, cl.name as client, p.name as plan, p.price, a.address FROM `contracts` as c, `clients` as cl, `plans` as p, `addresses` as a WHERE cl.id = c.client_id AND p.id=c.plan_id AND a.id=cl.address_id ORDER BY c.id ASC;"
+    );
     resp.json(result);
   } catch (error) {
     resp.send(error.message);
@@ -27,53 +30,11 @@ const getContract = async (req, resp) => {
 
 const addContract = async (req, resp) => {
   try {
-    const {
-      client_id,
-      plan_id,
-      day_cut,
-      server_id,
-      state,
-      ip,
-      netmask,
-      mac_address,
-      details,
-      node_id,
-      created_at,
-      updated_at,
-    } = req.body;
-    if (
-      client_id === undefined ||
-      plan_id === undefined ||
-      day_cut === undefined ||
-      server_id === undefined ||
-      state === undefined ||
-      ip === undefined ||
-      netmask === undefined ||
-      mac_address === undefined ||
-      details === undefined ||
-      node_id === undefined ||
-      created_at === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+    let data = req.body;
 
-    const data = {
-      client_id,
-      plan_id,
-      day_cut,
-      server_id,
-      state,
-      ip,
-      netmask,
-      mac_address,
-      details,
-      node_id,
-      created_at,
-      updated_at,
-    };
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
+
     const connection = await getConnection();
     const result = await connection.query(
       "INSERT INTO `contracts` SET ?",
@@ -88,49 +49,9 @@ const addContract = async (req, resp) => {
 const updateContract = async (req, resp) => {
   try {
     const { id } = req.params;
-    const {
-      client_id,
-      plan_id,
-      server_id,
-      day_cut,
-      state,
-      ip,
-      netmask,
-      mac_address,
-      details,
-      node_id,
-      updated_at,
-    } = req.body;
-    
-    if (
-      client_id === undefined ||
-      plan_id === undefined ||
-      server_id === undefined ||
-      state === undefined ||
-      ip === undefined ||
-      netmask === undefined ||
-      mac_address === undefined ||
-      details === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-    const data = {
-      client_id,
-      plan_id,
-      server_id,
-      day_cut,
-      state,
-      ip,
-      netmask,
-      mac_address,
-      details,
-      node_id,
-      updated_at,
-    };
     const connection = await getConnection();
     const result = await connection.query(
       "UPDATE `contracts` SET ? WHERE id = ?",

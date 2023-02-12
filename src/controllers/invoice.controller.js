@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { getConnection } from "./../database/connection";
 
 const getInvoices = async (req, res) => {
@@ -29,32 +30,16 @@ const getInvoice = async (req, res) => {
 
 const addInvoice = async (req, res) => {
   try {
-    const { contract_id, from, to, created_at, updated_at, die_date, state } =
-      req.body;
+    // const { contract_id, from, to, die_date, state } = req.body;
+    let data = req.body;
+    data.to = moment(data.from).add(1, "M").add(-1, "d").format("YYYY-MM-DD");
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
+    data.die_date = moment(data.from)
+      .add(data.die_date, "d")
+      .format("YYYY-MM-DD");
+    data.state = "Activa"; //Vencida, Pagada
 
-    if (
-      contract_id === undefined ||
-      from === undefined ||
-      to === undefined ||
-      created_at === undefined ||
-      updated_at === undefined ||
-      die_date === undefined ||
-      state === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-
-    const data = {
-      contract_id,
-      from,
-      to,
-      created_at,
-      updated_at,
-      die_date,
-      state,
-    };
     const conn = await getConnection();
     const result = await conn.query("INSERT INTO `invoices` SET ?", data);
     res.json(result);
@@ -66,15 +51,12 @@ const addInvoice = async (req, res) => {
 const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
-    const { updated_at, state } = req.body;
 
-    if (updated_at === undefined || state === undefined) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+    let data = {
+      updated_at: moment().format("YYYY-MM-DD"),
+      state: "Pagada",
+    };
 
-    const data = { updated_at, state };
     const conn = await getConnection();
     const result = await conn.query("UPDATE `invoices` SET ? WHERE id = ?", [
       data,

@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { getConnection } from "./../database/connection";
 
 const getPlans = async (req, resp) => {
@@ -27,35 +28,11 @@ const getPlan = async (req, resp) => {
 
 const addPlan = async (req, resp) => {
   try {
-    const {
-      name,
-      ceil_down_mbps,
-      ceil_up_mbps,
-      price,
-      created_at,
-      updated_at,
-    } = req.body;
+    //   name, ceil_down_mbps, ceil_up_mbps, price
+    let data = req.body;
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-    if (
-      name === undefined ||
-      ceil_down_mbps === undefined ||
-      ceil_up_mbps === undefined ||
-      price === undefined ||
-      created_at === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-    const data = {
-      name,
-      ceil_down_mbps,
-      ceil_up_mbps,
-      price,
-      created_at,
-      updated_at,
-    };
     const connection = await getConnection();
     const result = await connection.query("INSERT INTO `plans` SET ?", data);
     resp.json(result);
@@ -67,32 +44,9 @@ const addPlan = async (req, resp) => {
 const updatePlan = async (req, resp) => {
   try {
     const { id } = req.params;
-    const {
-      name,
-      ceil_down_mbps,
-      ceil_up_mbps,
-      price,
-      updated_at,
-    } = req.body;
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-    if (
-      name === undefined ||
-      ceil_down_mbps === undefined ||
-      ceil_up_mbps === undefined ||
-      price === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-    const data = {
-      name,
-      ceil_down_mbps,
-      ceil_up_mbps,
-      price,
-      updated_at,
-    };
     const connection = await getConnection();
     const result = await connection.query("UPDATE `plans` SET ? WHERE id = ?", [
       data,
@@ -103,20 +57,6 @@ const updatePlan = async (req, resp) => {
     resp.send(error.message);
   }
 };
-
-// const deletePlan = async (req, resp) => {
-//   try {
-//     const { id } = req.params;
-//     const connection = await getConnection();
-//     const result = await connection.query(
-//       "DELETE FROM `plans` WHERE id = ?",
-//       id
-//     );
-//     resp.json(result);
-//   } catch (error) {
-//     resp.send(error.message);
-//   }
-// };
 
 export const methods = {
   getPlans,
