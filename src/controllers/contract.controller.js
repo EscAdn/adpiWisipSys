@@ -35,6 +35,7 @@ const addContract = async (req, resp) => {
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
 
+    // resp.json(data);
     const connection = await getConnection();
     const result = await connection.query(
       "INSERT INTO `contracts` SET ?",

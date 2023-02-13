@@ -36,7 +36,7 @@ const addNode = async (req, resp) => {
 
     data.created_at = hoy;
     data.updated_at = hoy;
-
+    // resp.json(data);
     const connection = await getConnection();
     const result = await connection.query("INSERT INTO `nodes` SET ?", data);
     resp.json(result);

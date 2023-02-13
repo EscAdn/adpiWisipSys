@@ -1,7 +1,7 @@
 import { check, validationResult } from "express-validator";
 
 const validateCreated = [
-  check("address").exists().not().isEmpty(),
+  check("address").exists().isString(),
   (req, res, next) => {
     validationResult(req, res, next);
   },

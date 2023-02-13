@@ -3,7 +3,7 @@ import validateResults from "../helpers/validateHelper";
 
 const validateCreate = [
   check("address_id").exists().isNumeric(),
-  check("details").exists().not().isEmpty(),
+  check("details").exists().not().isEmpty().isString(),
   check("ports")
     .exists()
     .isNumeric()
