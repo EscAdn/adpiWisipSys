@@ -1,4 +1,5 @@
 import moment from "moment/moment";
+import { getFechas } from "../utils/invoicesStates";
 import { getConnection } from "./../database/connection";
 
 const getInvoices = async (req, res) => {
@@ -30,19 +31,30 @@ const getInvoice = async (req, res) => {
 
 const addInvoice = async (req, res) => {
   try {
-    // const { contract_id, from, to, die_date, state } = req.body;
+    // const { contract_id, from} = req.body;
     let data = req.body;
-    data.to = moment(data.from).add(1, "M").add(-1, "d").format("YYYY-MM-DD");
-    data.created_at = moment().format("YYYY-MM-DD");
-    data.updated_at = moment().format("YYYY-MM-DD");
-    data.die_date = moment(data.from)
-      .add(data.die_date, "d")
-      .format("YYYY-MM-DD");
-    data.state = "Activa"; //Vencida, Pagada
-
     const conn = await getConnection();
-    const result = await conn.query("INSERT INTO `invoices` SET ?", data);
-    res.json(result);
+    const existInvoice = await conn.query(
+      `SELECT c.* FROM contracts c WHERE c.day_cut= ${moment(
+        data.from
+      ).date()} AND c.id = ${
+        data.contract_id
+      } AND NOT EXISTS (SELECT id FROM invoices WHERE invoices.from = '${
+        data.from
+      }' AND invoices.contract_id=c.id);`
+    );
+
+    if (existInvoice.length === 0) {
+      res.json({
+        exist: "El contrato ya cuenta con la factura del mes creada",
+        data: existInvoice.length,
+      });
+    } else {
+      data = { ...data, ...getFechas(data.from) };
+
+      const result = await conn.query("INSERT INTO `invoices` SET ?", data);
+      res.json(result);
+    }
   } catch (error) {
     res.json({ err: error.message });
   }
