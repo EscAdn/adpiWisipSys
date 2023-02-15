@@ -1,66 +1,38 @@
-import { getConnection } from "./../database/connection";
 import moment from "moment";
+import { getConnection } from "./../database/connection";
+import { nodesServices } from "./../services/nodes";
 
 const getNodes = async (req, resp) => {
-  try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT a.address, n.* FROM `nodes` as n, `addresses` as a WHERE a.id = n.address_id;"
-    );
-    resp.json(result);
-  } catch (e) {
-    resp.send(e.message);
-  }
+  const result = await nodesServices.getNodes();
+  resp.json(result);
 };
 
 const getNode = async (req, resp) => {
-  try {
-    const { id } = req.params;
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `nodes` WHERE id = ?",
-      id
-    );
-    resp.json(result);
-  } catch (e) {
-    resp.send(e.message);
-  }
+  const {id} = req.params;
+  const result = await nodesServices.getNode(id);
+  resp.json(result);
 };
 
 const addNode = async (req, resp) => {
   // Recibe address_id, details, ports
-  try {
-    let data = req.body;
-    let hoy = moment().format("YYYY-MM-DD");
+  let data = req.body;
+  let hoy = moment().format("YYYY-MM-DD");
 
-    data.created_at = hoy;
-    data.updated_at = hoy;
-    // resp.json(data);
-    const connection = await getConnection();
-    const result = await connection.query("INSERT INTO `nodes` SET ?", data);
-    resp.json(result);
-  } catch (e) {
-    resp.send(e.message);
-  }
+  data.created_at = hoy;
+  data.updated_at = hoy;
+  const result = await nodesServices.addNode(data);
+  resp.json(result);
+  
 };
 
 const updateNode = async (req, resp) => {
   // Recibe address_id, details, ports
-  try {
-    const { id } = req.params;
-    let data = req.body;
-    data.updated_at = moment().format("YYYY-MM-DD");
+  const { id } = req.params;
+  let data = req.body;
+  data.updated_at = moment().format("YYYY-MM-DD");
 
-    const connection = await getConnection();
-    const result = await connection.query("UPDATE `nodes` SET ? WHERE id = ?", [
-      data,
-      id,
-    ]);
-    resp.json(result);
-  } catch (e) {
-    resp.send(e.message);
-  }
+  const result = await nodesServices.updateNode(id, data);
+  resp.json(result);
 };
 
 export const methods = {

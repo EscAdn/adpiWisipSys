@@ -1,6 +1,10 @@
 import moment from "moment";
 import { getConnection } from "../database/connection";
 
+
+// Esto esta en contracts Services, 
+// la función busca los contratos 
+// ya sea segun un contrato o en la fecha del día
 export const getContracts = async () => {
   let dia = moment().date();
   let hoy = moment().format("YYYY-MM-DD");
