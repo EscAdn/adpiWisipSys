@@ -1,81 +1,41 @@
 import moment from "moment/moment";
 import { getConnection } from "./../database/connection";
+import { contractsServices } from "../services/contracts";
 
 const getContracts = async (req, resp) => {
-  try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT c.*, cl.name as client, p.name as plan, p.price, a.address FROM `contracts` as c, `clients` as cl, `plans` as p, `addresses` as a WHERE cl.id = c.client_id AND p.id=c.plan_id AND a.id=cl.address_id ORDER BY c.id ASC;"
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
+  const result = await contractsServices.getContracts();
+  resp.json(result);
 };
 
 const getContract = async (req, resp) => {
-  try {
-    const { id } = req.params;
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `contracts` WHERE id = ?",
-      id
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
+  const { id } = req.params;
+  const result = await contractsServices.getContract(id);
+  resp.json(result);
 };
 
 const addContract = async (req, resp) => {
-  try {
-    let data = req.body;
+  let data = req.body;
+  data.created_at = moment().format("YYYY-MM-DD");
+  data.updated_at = moment().format("YYYY-MM-DD");
 
-    data.created_at = moment().format("YYYY-MM-DD");
-    data.updated_at = moment().format("YYYY-MM-DD");
-
-    // resp.json(data);
-    const connection = await getConnection();
-    const result = await connection.query(
-      "INSERT INTO `contracts` SET ?",
-      data
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
+  const result = await contractsServices.addContract(data);
+  resp.json(result);
 };
 
 const updateContract = async (req, resp) => {
-  try {
-    const { id } = req.params;
-    let data = req.body;
-    data.updated_at = moment().format("YYYY-MM-DD");
+  const { id } = req.params;
+  let data = req.body;
+  data.updated_at = moment().format("YYYY-MM-DD");
 
-    const connection = await getConnection();
-    const result = await connection.query(
-      "UPDATE `contracts` SET ? WHERE id = ?",
-      [data, id]
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
+  const result = await contractsServices.updateContract(id, data);
+  resp.json(result);
 };
 
 const deleteContract = async (req, resp) => {
-  try {
-    const { id } = req.params;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "DELETE FROM `contracts` WHERE id = ?",
-      id
-    );
-    resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
-  }
+  const { id } = req.params;
+
+  const result = await contractsServices.deleteContract(id);
+  resp.json(result);
 };
 
 export const methods = {

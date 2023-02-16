@@ -1,18 +1,17 @@
 import moment from "moment";
 import { getConnection } from "../database/connection";
+import { contractsServices } from "../services/contracts";
+import { invoicesServices } from "../services/invoices";
 
-
-// Esto esta en contracts Services, 
-// la función busca los contratos 
+// Esto esta en contracts Services,
+// la función busca los contratos
 // ya sea segun un contrato o en la fecha del día
 export const getContracts = async () => {
   let dia = moment().date();
   let hoy = moment().format("YYYY-MM-DD");
 
-  const conn = await getConnection();
-  const result = await conn.query(
-    `SELECT c.* FROM contracts c WHERE c.day_cut= ${dia} AND NOT EXISTS (SELECT id FROM invoices WHERE invoices.from = '${hoy}' AND invoices.contract_id=c.id);`
-  );
+  const result = await contractsServices.getContractsOfDate(dia, hoy);
+
   if (result.length > 0) {
     result.map(async (x) => {
       let data = {
@@ -21,8 +20,7 @@ export const getContracts = async () => {
         ...getFechas(hoy),
       };
 
-      const conn = await getConnection();
-      const result = await conn.query("INSERT INTO `invoices` SET ?", data);
+      const addInvoice = await invoicesServices.addInvoice(data);
     });
   }
 };
