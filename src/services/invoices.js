@@ -1,5 +1,6 @@
 import { getFechas } from "../utils/invoicesStates";
 import { getConnection } from "./../database/connection";
+import { contractsServices } from "./contracts";
 
 const getInvoices = async () => {
   try {
@@ -26,6 +27,38 @@ const getInvoice = async (id) => {
   }
 };
 
+const getInvoiceState = async (state) => {
+	try {
+		const conn = await getConnection();
+		const result = await conn.query(
+			`SELECT i.* FROM invoices as i, contracts as c 
+			WHERE c.id=i.contract_id AND i.state="${state}";`
+			);
+	} catch(e) {
+		return e.message;
+	}
+}
+
+const updateInvoicesDie = async (die_date) => {
+	try {
+		const conn = await getConnection();
+		const result = await conn.query(
+			`UPDATE `invoices` SET `state`='Vencida' 
+			WHERE die_date <= '${die_date}' 
+			AND state = 'Activa' 
+			AND NOT EXISTS 
+			(SELECT id, state 
+			FROM payment_promises as pp 
+			WHERE pp.valid_until > '${die_date}' 
+			AND pp.state = 'Activa');`
+			);
+		return result;
+	} catch(e) {
+		return e.message;
+	}
+}
+
+// recibe {contract_id, from, date}
 const addInvoice = async (data) => {
   try {
     const conn = await getConnection();
@@ -33,24 +66,19 @@ const addInvoice = async (data) => {
     // Esto esta en contracts Services,
     // la función busca los contratos
     // ya sea segun un contrato o en la fecha del día
-    const existInvoice = await conn.query(
-      `SELECT c.* FROM contracts c 
-			WHERE c.day_cut= ${data.date} 
-			AND c.id = ${data.contract_id} 
-			AND NOT EXISTS 
-			(SELECT id FROM invoices WHERE 
-			invoices.from = '${data.from}' 
-			AND invoices.contract_id=c.id);`
-    );
-
+    const existInvoice = await contractsServices.getContractsOfDate(
+    	data.date, data.from, data.contract_id
+    	);
+    // return existInvoice;
     if (existInvoice.length === 0) {
       return {
         exist: "El contrato ya cuenta con la factura del mes creada",
         data: existInvoice.length,
       };
     } else {
+    	delete data.date;
       data = { ...data, ...getFechas(data.from) };
-
+      
       const result = await conn.query("INSERT INTO `invoices` SET ?", data);
       return result;
     }

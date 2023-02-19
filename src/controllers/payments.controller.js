@@ -1,93 +1,40 @@
-import { getConnection } from "./../database/connection";
+import { paymentServices } from "./../database/connection";
 
 const getPaymentsPromises = async (req, res) => {
-  try {
-    const conn = await getConnection();
-    const resut = await conn.query("SELECT * FROM payment_promises;");
-    res.json(resut);
-  } catch (error) {
-    res.json({ err: error.message });
-  }
+  const resut = await paymentServices.getPaymentsPromises();
+  res.json(resut);
 };
 
 const getPaymentPromise = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const conn = await getConnection();
-    const result = await conn.query(
-      "SELECT * FROM payment_promises WHERE id = ?;",
-      id
-    );
-    res.json(result);
-  } catch (error) {
-    res.json({ err: error.message });
-  }
+  const result = await paymentServices.getPaymentPromise(id);
+  res.json(result);
 };
 
 const addPaymentPromise = async (req, res) => {
-  try {
-    const { valid_until, contract_id, created_at, updated_at } = req.body;
+    let data = req.body;
 
-    if (
-      valid_until === undefined ||
-      contract_id === undefined ||
-      created_at === undefined ||
-      updated_at === undefined
-    ) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
-
-    const data = { valid_until, contract_id, created_at, updated_at };
-    const conn = await getConnection();
-    const result = await conn.query(
-      "INSERT INTO `payment_promises` SET ? ",
-      data
-    );
+    const result = await paymentServices.addPaymentPromise(data)
     res.json(result);
-  } catch (error) {
-    res.json({ err: error.message });
-  }
 };
 
 const updatePaymentPromise = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { valid_until } = req.body;
 
-    if (valid_until === undefined) {
-      resp.json({
-        message: "Error al procesar la información enviada :(...",
-      });
-    }
+  const { id } = req.params;
+    // { valid_until } 
+  let data = req.body;
 
-    const data = { valid_until };
-    const conn = await getConnection();
-    const result = await conn.query(
-      "UPDATE `payment_promises` SET ? WHERE id = ?",
-      [data, id]
-    );
-    res.json(result);
-  } catch (error) {
-    res.json({ err: error.message });
-  }
+  const result = await paymentServices.updatePaymentPromise(id, data);
+  res.json(result);
+  
 };
 
 const deletePaymentPromise = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const conn = await getConnection();
-    const resut = await conn.query(
-      "DELETE * FROM  payment_promises WHERE id = ?",
-      id
-    );
-    res.json(resut);
-  } catch (error) {
-    res.json({ err: error.message });
-  }
+  const resut = await paymentServices.deletePaymentPromise(id);
+  res.json(resut);
 };
 
 export const methods = {

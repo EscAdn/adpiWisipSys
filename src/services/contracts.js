@@ -1,7 +1,7 @@
 import { getConnection } from "./../database/connection";
 
 // Obtiene los contratos que facturan en la fecha indicada
-// y no cuentan con factura generada del mes
+// y no cuentan con factura generada del mes indicado
 const getContractsOfDate = async (day, now, contract_id = 0) => {
   try {
     const conn = await getConnection();

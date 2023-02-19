@@ -14,8 +14,10 @@ const getInvoice = async (req, res) => {
 };
 
 const addInvoice = async (req, res) => {
-    // const { contract_id, from} = req.body;
+    //{ contract_id = id del contrato 
+    // from = fecha en que se genera la factura
     let data = req.body;
+    // Obtener el día de la fecha para buscar facturas que coincidan
     data.date = moment(data.from).date();
 
     const result = await invoicesServices.addInvoice(data);
