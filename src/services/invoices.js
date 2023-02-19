@@ -43,7 +43,7 @@ const updateInvoicesDie = async (die_date) => {
 	try {
 		const conn = await getConnection();
 		const result = await conn.query(
-			`UPDATE `invoices` SET `state`='Vencida' 
+			`UPDATE invoices SET state='Vencida' 
 			WHERE die_date <= '${die_date}' 
 			AND state = 'Activa' 
 			AND NOT EXISTS 
