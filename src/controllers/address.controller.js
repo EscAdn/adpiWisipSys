@@ -34,7 +34,7 @@ const getAddress = async (req, resp) => {
 
 const addAddress = async (req, resp) => {
   try {
-    let date = req.body;
+    let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
 
@@ -57,7 +57,7 @@ const updateAddress = async (req, resp) => {
 
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE `addresses` SET ? WHERE id = ?",
+      "UPDATE addresses SET ? WHERE id = ?",
       [data, id]
     );
     resp.json(result);

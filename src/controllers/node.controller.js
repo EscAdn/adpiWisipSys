@@ -13,8 +13,8 @@ const getNode = async (req, resp) => {
   resp.json(result);
 };
 
+//address_id (Int), details (String), ports (Int)
 const addNode = async (req, resp) => {
-  // Recibe address_id, details, ports
   let data = req.body;
   let hoy = moment().format("YYYY-MM-DD");
 
@@ -25,8 +25,8 @@ const addNode = async (req, resp) => {
   
 };
 
-const updateNode = async (req, resp) => {
-  // Recibe address_id, details, ports
+//address_id (Int), details (String), ports (Int)
+const updateNode = async (req, resp) => {  
   const { id } = req.params;
   let data = req.body;
   data.updated_at = moment().format("YYYY-MM-DD");

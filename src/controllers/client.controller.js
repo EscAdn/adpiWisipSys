@@ -62,7 +62,7 @@ const deleteClient = async (req, resp) => {
     const { id } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "DELETE FROM `clients` WHERE id = ?",
+      "DELETE FROM clients WHERE id = ?",
       id
     );
     resp.json(result);
