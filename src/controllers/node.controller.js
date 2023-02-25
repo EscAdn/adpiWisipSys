@@ -1,5 +1,4 @@
 import moment from "moment";
-import { getConnection } from "./../database/connection";
 import { nodesServices } from "./../services/nodes";
 
 const getNodes = async (req, resp) => {
