@@ -38,7 +38,7 @@ app.use("/api/plans", planRoute);
 app.use("/api/contracts", contractRoute);
 app.use("/api/payments", paymentRoute);
 app.use("/api/invoices", invoiceRoute);
-app.use("/api/payment_type", paymentTypeRoute);
+app.use("/api/payments_types", paymentTypeRoute);
 app.use("/api/bills", billRoute);
 
 export default app;

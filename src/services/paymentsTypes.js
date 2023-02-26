@@ -52,7 +52,7 @@ const updategetPaymentType = async (id, data) => {
 	}
 }
 
-export const billsServices = {
+export const paymentsTypesServices = {
 	getPaymentsTypes, 
 	getPaymentType, 
 	addPaymentType, 

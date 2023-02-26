@@ -26,16 +26,16 @@ const addBill = async (req, res) => {
 
 // concept (String), payment_type_id (int), client_name (String)
 // amount_incomes (decimal), amount_discharge (decimal)
-const updateBill = async (id, data) => {
+const updateBill = async (req, res) => {
 	let {id} = req.params;
 	let data = req.body;
 	data.updated_at = moment().format("YYYY-MM-DD");
 
-	const resut = await billsServices.updategetBill(id, data);
+	const resut = await billsServices.updateBill(id, data);
 	res.json(resut);
 }
 
-const deleteBill = async (id) => {
+const deleteBill = async (req, res) => {
 	let {id} = req.params;
 	const resut = await billsServices.deleteBill(id);
 	res.json(resut);

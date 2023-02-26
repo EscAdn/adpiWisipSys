@@ -14,7 +14,7 @@ const getPaymentType = async (req, res) => {
 }
 
 // type (String)
-const addPaymentType = async (req, resp) => {
+const addPaymentType = async (req, res) => {
 	let data = req.body;
 	data.created_at = moment().format("YYYY-MM-DD");
 	data.updated_at = moment().format("YYYY-MM-DD");
@@ -24,7 +24,7 @@ const addPaymentType = async (req, resp) => {
 }
 
 // type (String), id
-const updategetPaymentType = async (req, resp) => {
+const updategetPaymentType = async (req, res) => {
 	let {id} = req.params;
 	let data = req.body;
 	data.updated_at = moment().format("YYYY-MM-DD");
