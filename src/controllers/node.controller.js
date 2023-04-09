@@ -34,7 +34,7 @@ const updateNode = async (req, resp) => {
   resp.json(result);
 };
 
-export const methods = {
+export {
   getNodes,
   getNode,
   addNode,

@@ -66,7 +66,7 @@ const updateAddress = async (req, resp) => {
   }
 };
 
-export const methods = {
+export {
   getAddresses,
   getAddress,
   addAddress,

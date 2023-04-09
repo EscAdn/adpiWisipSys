@@ -33,7 +33,7 @@ const updategetPaymentType = async (req, res) => {
 	res.json(result);
 }
 
-export const methods = {
+export {
 	getPaymentsTypes, 
 	getPaymentType, 
 	addPaymentType, 

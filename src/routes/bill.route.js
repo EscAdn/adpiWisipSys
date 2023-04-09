@@ -1,12 +1,12 @@
 import {Router} from "express";
-import {methods as bills} from "./../controllers/bill.componets";
+import {getBills, getBill, addBill, updateBill, deleteBill} from "./../controllers/bill.componets";
 
 const router = Router();
 
-router.get("/", bills.getBills);
-router.get("/:id", bills.getBill);
-router.post("/", bills.addBill);
-router.put("/:id", bills.updateBill);
-router.delete("/:id", bills.deleteBill);
+router.get("/", getBills);
+router.get("/:id", getBill);
+router.post("/", addBill);
+router.put("/:id", updateBill);
+router.delete("/:id", deleteBill);
 
 export default router;

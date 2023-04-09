@@ -4,7 +4,7 @@ const getPaymentsTypes = async () => {
 	try {
 		const conn = await getConnection();
 		const resut = await conn.query(
-			`SELECT id, type, created_at, updated_at 
+			`SELECT id, type as name, created_at, updated_at 
 			FROM payment_types;`
 			);
 		return resut;
@@ -17,7 +17,7 @@ const getPaymentType = async (id) => {
 	try {
 		const conn = await getConnection();
 		const resut = await conn.query(
-			`SELECT id, type, created_at, updated_at 
+			`SELECT id, type as name, created_at, updated_at 
 			FROM payment_types WHERE id = ?;`, id
 			);
 		return resut;

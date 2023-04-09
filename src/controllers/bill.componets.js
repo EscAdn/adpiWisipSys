@@ -1,15 +1,15 @@
 import moment from "moment";
-import {billsServices} from "./../services/bills";
+import {services} from "./../services/bills";
 
 const getBills = async (req, res) => {
-	const resut = await billsServices.getBills();
+	const resut = await services.getBills();
 	res.json(resut);
 }
 
 const getBill = async (req, res) => {
 	let {id} = req.params;
 
-	const resut = await billsServices.getBill(id);
+	const resut = await services.getBill(id);
 	res.json(resut);	
 }
 
@@ -20,7 +20,7 @@ const addBill = async (req, res) => {
 	data.created_at = moment().format("YYYY-MM-DD");
 	data.updated_at = moment().format("YYYY-MM-DD");
 
-	const resut = await billsServices.addBill(data);
+	const resut = await services.addBill(data);
 	res.json(resut);
 }
 
@@ -31,18 +31,18 @@ const updateBill = async (req, res) => {
 	let data = req.body;
 	data.updated_at = moment().format("YYYY-MM-DD");
 
-	const resut = await billsServices.updateBill(id, data);
+	const resut = await services.updateBill(id, data);
 	res.json(resut);
 }
 
 const deleteBill = async (req, res) => {
 	let {id} = req.params;
-	const resut = await billsServices.deleteBill(id);
+	const resut = await services.deleteBill(id);
 	res.json(resut);
 }
 
 
-export const methods = {
+export {
 	getBills, 
 	getBill, 
 	addBill, 

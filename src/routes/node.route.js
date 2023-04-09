@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { methods as node } from "../controllers/node.controller";
+import { getNodes, getNode, addNode, updateNode } from "../controllers/node.controller";
 import { validated } from "../validators/node.validator";
 
 const router = Router();
 
 //EndPoints
-router.get("/", node.getNodes);
-router.get("/:id", node.getNode);
-router.post("/", validated.validateCreate, node.addNode);
-router.put("/:id", validated.validateCreate, node.updateNode);
+router.get("/", getNodes);
+router.get("/:id", getNode);
+router.post("/", validated.validateCreate, addNode);
+router.put("/:id", validated.validateCreate, updateNode);
 
 export default router;

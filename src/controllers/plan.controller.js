@@ -58,7 +58,7 @@ const updatePlan = async (req, resp) => {
   }
 };
 
-export const methods = {
+export {
   getPlans,
   getPlan,
   addPlan,

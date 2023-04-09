@@ -1,13 +1,13 @@
 import { Router } from "express";
 import validateInvoice from "../validators/invoice.validator";
-import { methods as invoice } from "./../controllers/invoice.controller";
+import { getInvoices, getInvoice, addInvoice, updateInvoice, deleteInvoice } from "./../controllers/invoice.controller";
 
 const router = Router();
 
-router.get("/", invoice.getInvoices);
-router.get("/:id", invoice.getInvoice);
-router.post("/", validateInvoice, invoice.addInvoice);
-router.put("/:id", invoice.updateInvoice);
-router.delete("/:id", invoice.deleteInvoice);
+router.get("/", getInvoices);
+router.get("/:id", getInvoice);
+router.post("/", validateInvoice, addInvoice);
+router.put("/:id", updateInvoice);
+router.delete("/:id", deleteInvoice);
 
 export default router;

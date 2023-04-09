@@ -18,12 +18,12 @@ cron.schedule("0 1 * * *", async () => {
 
   // Actualizar estado de los contratos
   await disableContracts(dia, hoy);
-  console.log("Generar facturas");
+  // console.log("Generar facturas");
 });
 
 const main = () => {
   app.listen(app.get("port"));
-  console.log(`*****CONEXION CORECTA PUERTO: ${app.get("port")}****`);
+  console.log(`*****CONEXION CORRECTA EN EL PUERTO: ${app.get("port")}****`);
 };
 
 main();

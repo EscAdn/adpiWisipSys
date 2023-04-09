@@ -38,7 +38,7 @@ const deleteContract = async (req, resp) => {
   resp.json(result);
 };
 
-export const methods = {
+export {
   getContracts,
   getContract,
   addContract,

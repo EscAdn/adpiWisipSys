@@ -71,7 +71,7 @@ const deleteClient = async (req, resp) => {
   }
 };
 
-export const methods = {
+export {
   getClients,
   getClient,
   addClient,

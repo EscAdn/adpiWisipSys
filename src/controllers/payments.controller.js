@@ -37,7 +37,7 @@ const deletePaymentPromise = async (req, res) => {
   res.json(resut);
 };
 
-export const methods = {
+export {
   getPaymentsPromises,
   getPaymentPromise,
   addPaymentPromise,

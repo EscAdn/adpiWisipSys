@@ -9,6 +9,7 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import config from './config';
 // Routes
 import addressRoute from "./routes/address.route";
 import nodeRoute from "./routes/node.route";
@@ -20,21 +21,20 @@ import invoiceRoute from "./routes/invoice.route";
 import paymentTypeRoute from './routes/paymentType.route';
 import billRoute from './routes/bill.route';
 
-const port = 3001;
 const app = express();
 
 app.use(cors());
 
-app.set("port", process.env.PORT || port);
+app.set("port", config.port);
 
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
+// Routes v1
 app.use("/api/addresses", addressRoute);
 app.use("/api/nodes", nodeRoute);
-app.use("/api/clients", clientRoute);
 app.use("/api/plans", planRoute);
+app.use("/api/clients", clientRoute);
 app.use("/api/contracts", contractRoute);
 app.use("/api/payments", paymentRoute);
 app.use("/api/invoices", invoiceRoute);
