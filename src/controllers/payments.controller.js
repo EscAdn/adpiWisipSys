@@ -1,4 +1,4 @@
-import { methods as paymentServices } from "./../services/paymentPromises";
+import { paymentServices } from "./../services/paymentPromises";
 
 const getPaymentsPromises = async (req, res) => {
   const resut = await paymentServices.getPaymentsPromises();
