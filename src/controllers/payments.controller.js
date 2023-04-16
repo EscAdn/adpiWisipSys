@@ -1,4 +1,4 @@
-import { paymentServices } from "./../database/connection";
+import { methods as paymentServices } from "./../services/paymentPromises";
 
 const getPaymentsPromises = async (req, res) => {
   const resut = await paymentServices.getPaymentsPromises();
@@ -13,21 +13,19 @@ const getPaymentPromise = async (req, res) => {
 };
 
 const addPaymentPromise = async (req, res) => {
-    let data = req.body;
+  let data = req.body;
 
-    const result = await paymentServices.addPaymentPromise(data)
-    res.json(result);
+  const result = await paymentServices.addPaymentPromise(data);
+  res.json(result);
 };
 
 const updatePaymentPromise = async (req, res) => {
-
   const { id } = req.params;
-    // { valid_until } 
+  // { valid_until }
   let data = req.body;
 
   const result = await paymentServices.updatePaymentPromise(id, data);
   res.json(result);
-  
 };
 
 const deletePaymentPromise = async (req, res) => {
