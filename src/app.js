@@ -17,6 +17,7 @@ import planRoute from "./routes/plan.route";
 import contractRoute from "./routes/contract.route";
 import paymentRoute from "./routes/payment.route";
 import invoiceRoute from "./routes/invoice.route";
+import usersRoute from "./routes/users.route";
 
 const port = 3001;
 const app = express();
@@ -36,5 +37,6 @@ app.use("/api/plans", planRoute);
 app.use("/api/contracts", contractRoute);
 app.use("/api/payments", paymentRoute);
 app.use("/api/invoices", invoiceRoute);
+app.use("/api/users", usersRoute);
 
 export default app;
