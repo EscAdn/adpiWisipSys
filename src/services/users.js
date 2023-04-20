@@ -8,20 +8,33 @@ const getUsers = async () => {
     );
     return result;
   } catch (e) {
-    return e.message;
+    return { err: e.message };
   }
 };
 
-const getUser = async (email, password) => {
+const getUserExist = async (email) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, name, email, password, telephone, created_at, updated_at FROM users WHERE email = ? AND password = ?`,
-      [email, password]
+      `SELECT id, email created_at FROM users WHERE email = ?`,
+      email
     );
     return result;
   } catch (e) {
-    return e.message;
+    return { err: e.message };
+  }
+};
+
+const getUser = async (email) => {
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `SELECT id, name, email, password, telephone, created_at, updated_at FROM users WHERE email = ?`,
+      email
+    );
+    return result;
+  } catch (e) {
+    return { err: e.message };
   }
 };
 
@@ -30,8 +43,8 @@ const addUser = async (data) => {
     const conn = await getConnection();
     const result = await conn.query(`INSERT INTO users SET ?`, data);
     return result;
-  } catch (error) {
-    return e.message;
+  } catch (e) {
+    return { err: e.message };
   }
 };
 
@@ -39,4 +52,5 @@ export const userServices = {
   addUser,
   getUsers,
   getUser,
+  getUserExist,
 };

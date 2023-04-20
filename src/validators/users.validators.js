@@ -10,3 +10,11 @@ export const validateRegister = [
     return validateResults(req, res, next);
   },
 ];
+
+export const validateLogin = [
+  check("email").exists().notEmpty().isEmail(),
+  check("password").exists().notEmpty().isLength({ min: 5, max: 15 }),
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  },
+];
