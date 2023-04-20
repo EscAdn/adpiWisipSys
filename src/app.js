@@ -10,7 +10,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import config from './config';
-// Routes
+// Route
 import addressRoute from "./routes/address.route";
 import nodeRoute from "./routes/node.route";
 import clientRoute from "./routes/client.route";
