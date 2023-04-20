@@ -1,42 +1,53 @@
 import moment from "moment";
 import { nodesServices } from "./../services/nodes";
+import { errorMessage } from "../helpers/errorHelper";
 
 const getNodes = async (req, resp) => {
-  const result = await nodesServices.getNodes();
-  resp.json(result);
+  try {
+    const result = await nodesServices.getNodes();
+    resp.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const getNode = async (req, resp) => {
-  const {id} = req.params;
-  const result = await nodesServices.getNode(id);
-  resp.json(result);
+  try {
+    const { id } = req.params;
+    const result = await nodesServices.getNode(id);
+    resp.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 //address_id (Int), details (String), ports (Int)
 const addNode = async (req, resp) => {
-  let data = req.body;
-  let hoy = moment().format("YYYY-MM-DD");
+  try {
+    let data = req.body;
+    let hoy = moment().format("YYYY-MM-DD");
 
-  data.created_at = hoy;
-  data.updated_at = hoy;
-  const result = await nodesServices.addNode(data);
-  resp.json(result);
-  
+    data.created_at = hoy;
+    data.updated_at = hoy;
+    const result = await nodesServices.addNode(data);
+    resp.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 //address_id (Int), details (String), ports (Int)
-const updateNode = async (req, resp) => {  
-  const { id } = req.params;
-  let data = req.body;
-  data.updated_at = moment().format("YYYY-MM-DD");
+const updateNode = async (req, resp) => {
+  try {
+    const { id } = req.params;
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-  const result = await nodesServices.updateNode(id, data);
-  resp.json(result);
+    const result = await nodesServices.updateNode(id, data);
+    resp.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
-export {
-  getNodes,
-  getNode,
-  addNode,
-  updateNode,
-};
+export { getNodes, getNode, addNode, updateNode };

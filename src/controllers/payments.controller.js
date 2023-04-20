@@ -1,38 +1,63 @@
+import moment from "moment";
+import { errorMessage } from "../helpers/errorHelper";
 import { paymentServices } from "./../services/paymentPromises";
 
 const getPaymentsPromises = async (req, res) => {
-  const resut = await paymentServices.getPaymentsPromises();
-  res.json(resut);
+  try {
+    const resut = await paymentServices.getPaymentsPromises();
+    res.json(resut);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const getPaymentPromise = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const result = await paymentServices.getPaymentPromise(id);
-  res.json(result);
+    const result = await paymentServices.getPaymentPromise(id);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const addPaymentPromise = async (req, res) => {
-  let data = req.body;
+  try {
+    let data = req.body;
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-  const result = await paymentServices.addPaymentPromise(data);
-  res.json(result);
+    const result = await paymentServices.addPaymentPromise(data);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const updatePaymentPromise = async (req, res) => {
-  const { id } = req.params;
-  // { valid_until }
-  let data = req.body;
+  try {
+    const { id } = req.params;
+    // { valid_until }
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-  const result = await paymentServices.updatePaymentPromise(id, data);
-  res.json(result);
+    const result = await paymentServices.updatePaymentPromise(id, data);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const deletePaymentPromise = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const resut = await paymentServices.deletePaymentPromise(id);
-  res.json(resut);
+    const resut = await paymentServices.deletePaymentPromise(id);
+    res.json(resut);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 export {

@@ -8,10 +8,15 @@ import { errorMessage } from "./../helpers/errorHelper";
 export const addUser = async (req, res) => {
   try {
     req = matchedData(req);
+    console.log(req);
     const existeEmail = await userServices.getUserExist(req.email);
 
     if (existeEmail.length > 0) {
       throw new Error("EMAIL_EXIST");
+    }
+
+    if (!req.authorization) {
+      delete req.authorization;
     }
 
     const password = await encryp(req.password);
