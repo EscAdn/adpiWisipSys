@@ -63,8 +63,6 @@ const deletePaymentPromise = async (id) => {
   }
 };
 
-// Actualiza el estado de una promesa de pago
-// Se ejecuta todos los días a las 1 AM
 const updateStatePaymentPromises = async (now) => {
 	try {
 		const conn = await getConnection();

@@ -1,34 +1,69 @@
 import moment from "moment/moment";
-import {addressesServices} from './../services/address';
+import { getConnection } from "./../database/connection";
+
+const error = (resp, error) => {
+  resp.send(error.message);
+};
 
 const getAddresses = async (req, resp) => {
-  const result = await addressesServices.getAddresses();
-  resp.json(result);
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT `id`, `address` as name, `created_at`, `updated_at` FROM `addresses`"
+    );
+    resp.json(result);
+  } catch (e) {
+    error(resp, e);
+  }
 };
 
 const getAddress = async (req, resp) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const result = await addressesServices.getAddress(id);
-  resp.json(result);
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT * FROM `addresses` WHERE id = ?",
+      id
+    );
+    resp.json(result);
+  } catch (e) {
+    error(resp, e);
+  }
 };
 
-// address (String)
 const addAddress = async (req, resp) => {
-  let data = req.body;
-  data.created_at = moment().format("YYYY-MM-DD");
-  data.updated_at = moment().format("YYYY-MM-DD");
+  try {
+    let data = req.body;
+    data.created_at = moment().format("YYYY-MM-DD");
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-  const result = await addressesServices.addAddress(data);
+    const connection = await getConnection();
+    const result = await connection.query(
+      "INSERT INTO `addresses` SET ?",
+      data
+    );
+    resp.json(result);
+  } catch (e) {
+    error(resp, e);
+  }
 };
 
 const updateAddress = async (req, resp) => {
-  const { id } = req.params;
-  let data = req.body;
-  data.updated_at = moment().format("YYYY-MM-DD");
+  try {
+    const { id } = req.params;
+    let data = req.body;
+    data.updated_at = moment().format("YYYY-MM-DD");
 
-  const result = await addressesServices.updateAddress(id, data)
-  return result;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE addresses SET ? WHERE id = ?",
+      [data, id]
+    );
+    resp.json(result);
+  } catch (e) {
+    error(resp, e);
+  }
 };
 
 export const methods = {

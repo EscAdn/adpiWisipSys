@@ -6,7 +6,7 @@ const getInvoices = async () => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "SELECT iv.`id`, cl.name as client, ad.address, pl.name as plan, pl.price, iv.`from`, iv.`to`, iv.`created_at`, iv.`updated_at`, iv.`die_date`, iv.`state` FROM `invoices` as iv, contracts as ct, clients as cl, plans as pl, addresses as ad WHERE iv.contract_id = ct.id AND ct.client_id = cl.id AND ct.plan_id = pl.id AND cl.address_id=ad.id ORDER BY iv.id DESC;"
+      "SELECT iv.`id`, cl.name as client, ad.address, pl.name as plan, pl.price, iv.from, iv.`to`, iv.`created_at`, iv.`updated_at`, iv.`die_date`, iv.`state` FROM `invoices` as iv, contracts as ct, clients as cl, plans as pl, addresses as ad WHERE iv.contract_id = ct.id AND ct.client_id = cl.id AND ct.plan_id = pl.id AND cl.address_id=ad.id ORDER BY iv.id DESC;"
     );
     return result;
   } catch (error) {
@@ -69,6 +69,7 @@ const addInvoice = async (data) => {
     const existInvoice = await contractsServices.getContractsOfDate(
     	data.date, data.from, data.contract_id
     	);
+
     // return existInvoice;
     if (existInvoice.length === 0) {
       return {

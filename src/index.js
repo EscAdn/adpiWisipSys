@@ -5,19 +5,19 @@ import { getContracts,stateInvoices, statePaymentPromises, disableContracts } fr
 
 // Generar las Facturas, se ejecuta a la 1 A. M. todos los dias
 cron.schedule("0 1 * * *", async () => {
-  let day_of_date = moment().date();
-  let date = moment().format("YYYY-MM-DD");
+  let dia = moment().date();
+  let hoy = moment().format("YYYY-MM-DD");
   // Generar Facturas del día
   await getContracts();
 
   // Actualizar Promesas de pago
-  await statePaymentPromises(date);
+  await statePaymentPromises(hoy);
 
   // Actualizar estado de las facturas {Vencidas}
-  await stateInvoices(date);
+  await stateInvoices(hoy);
 
   // Actualizar estado de los contratos
-  await disableContracts(day_of_date, date);
+  await disableContracts(dia, hoy);
   console.log("Generar facturas");
 });
 

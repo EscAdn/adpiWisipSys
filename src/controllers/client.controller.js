@@ -1,42 +1,74 @@
 import moment from "moment/moment";
-import { clientsServices } from "./../services/clients";
+import { getConnection } from "./../database/connection";
 
 const getClients = async (req, resp) => {
-    const result = await clientsServices.getClients();
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT c.*, a.address FROM `clients` as c, `addresses` as a WHERE a.id = c.address_id ORDER BY c.id"
+    );
     resp.json(result);
+  } catch (e) {
+    resp.send(e.message);
+  }
 };
 
 const getClient = async (req, resp) => {
+  try {
     const { id } = req.params;
-    const result = await clientsServices.getClient(id);
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT * FROM `clients` WHERE id = ?",
+      id
+    );
     resp.json(result);
+  } catch (e) {
+    resp.send(e.message);
+  }
 };
 
-// name (String), telephone (String), address_id (Int)
 const addClient = async (req, resp) => {
+  try {
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
 
-    const result = await clientsServices.addClient(data);
+    const connection = await getConnection();
+    const result = await connection.query("INSERT INTO `clients` SET ?", data);
     resp.json(result);
+  } catch (e) {
+    resp.send(e.message);
+  }
 };
 
-// name (String), telephone (String), address_id (Int)
 const updateClient = async (req, resp) => {
+  try {
     const { id } = req.params;
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
-
-    const result = await clientsServices.updateClient(id, data);
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE `clients` SET ? WHERE id = ?",
+      [data, id]
+    );
     resp.json(result);
+  } catch (e) {
+    resp.send(e.message);
+  }
 };
 
-// id (Int)
 const deleteClient = async (req, resp) => {
+  try {
     const { id } = req.params;
-    const result = await clientsServices.deleteClient(id);
+    const connection = await getConnection();
+    const result = await connection.query(
+      "DELETE FROM clients WHERE id = ?",
+      id
+    );
     resp.json(result);
+  } catch (e) {
+    resp.send(e.message);
+  }
 };
 
 export const methods = {
