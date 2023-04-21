@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { methods as payment } from "./../controllers/payments.controller";
+import { getPaymentsPromises, getPaymentPromise, addPaymentPromise, updatePaymentPromise, deletePaymentPromise } from "./../controllers/payments.controller";
 
 const router = Router();
 
 // Endpoints
-router.get("/", payment.getPaymentsPromises);
-router.get("/:id", payment.getPaymentPromise);
-router.post("/", payment.addPaymentPromise);
-router.put("/:id", payment.updatePaymentPromise);
-router.delete("/:id", payment.deletePaymentPromise);
+router.get("/", getPaymentsPromises);
+router.get("/:id", getPaymentPromise);
+router.post("/", addPaymentPromise);
+router.put("/:id", updatePaymentPromise);
+router.delete("/:id", deletePaymentPromise);
 
 export default router;

@@ -1,7 +1,12 @@
 import app from "./app";
 import cron from "node-cron";
 import moment from "moment";
-import { getContracts,stateInvoices, statePaymentPromises, disableContracts } from "./utils/invoicesStates";
+import {
+  getContracts,
+  stateInvoices,
+  statePaymentPromises,
+  disableContracts,
+} from "./utils/invoicesStates";
 
 // Generar las Facturas, se ejecuta a la 1 A. M. todos los dias
 cron.schedule("0 1 * * *", async () => {
@@ -23,7 +28,7 @@ cron.schedule("0 1 * * *", async () => {
 
 const main = () => {
   app.listen(app.get("port"));
-  console.log(`*****CONEXION CORECTA PUERTO: ${app.get("port")}****`);
+  console.log(`*****CONEXION CORRECTA EN EL PUERTO: ${app.get("port")}****`);
 };
 
 main();

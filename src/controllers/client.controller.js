@@ -1,15 +1,13 @@
 import moment from "moment/moment";
-import { getConnection } from "./../database/connection";
+import { clientsServices } from "./../services/clients";
+import { errorMessage } from "../helpers/errorHelper";
 
 const getClients = async (req, resp) => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT c.*, a.address FROM `clients` as c, `addresses` as a WHERE a.id = c.address_id ORDER BY c.id"
-    );
+    const result = await clientsServices.getClients();
     resp.json(result);
   } catch (e) {
-    resp.send(e.message);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -23,7 +21,7 @@ const getClient = async (req, resp) => {
     );
     resp.json(result);
   } catch (e) {
-    resp.send(e.message);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -37,7 +35,7 @@ const addClient = async (req, resp) => {
     const result = await connection.query("INSERT INTO `clients` SET ?", data);
     resp.json(result);
   } catch (e) {
-    resp.send(e.message);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -53,7 +51,7 @@ const updateClient = async (req, resp) => {
     );
     resp.json(result);
   } catch (e) {
-    resp.send(e.message);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -67,14 +65,8 @@ const deleteClient = async (req, resp) => {
     );
     resp.json(result);
   } catch (e) {
-    resp.send(e.message);
+    errorMessage(res, e.errorMessage);
   }
 };
 
-export const methods = {
-  getClients,
-  getClient,
-  addClient,
-  updateClient,
-  deleteClient,
-};
+export { getClients, getClient, addClient, updateClient, deleteClient };

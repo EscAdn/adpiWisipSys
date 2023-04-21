@@ -1,34 +1,23 @@
 import moment from "moment/moment";
-import { getConnection } from "./../database/connection";
-
-const error = (resp, error) => {
-  resp.send(error.message);
-};
+import { addressesServices } from "./../services/address";
+import { errorMessage } from "../helpers/errorHelper";
 
 const getAddresses = async (req, resp) => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT `id`, `address` as name, `created_at`, `updated_at` FROM `addresses`"
-    );
+    const result = await addressesServices.getAddresses();
     resp.json(result);
   } catch (e) {
-    error(resp, e);
+    errorMessage(res, e.errorMessage);
   }
 };
 
 const getAddress = async (req, resp) => {
   try {
     const { id } = req.params;
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `addresses` WHERE id = ?",
-      id
-    );
+    const result = await addressesServices.getAddress(id);
     resp.json(result);
   } catch (e) {
-    error(resp, e);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -37,15 +26,10 @@ const addAddress = async (req, resp) => {
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "INSERT INTO `addresses` SET ?",
-      data
-    );
+    const result = await addressesServices.addAddress(data);
     resp.json(result);
   } catch (e) {
-    error(resp, e);
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -55,20 +39,11 @@ const updateAddress = async (req, resp) => {
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
 
-    const connection = await getConnection();
-    const result = await connection.query(
-      "UPDATE addresses SET ? WHERE id = ?",
-      [data, id]
-    );
+    const result = await addressesServices.updateAddress(id, data);
     resp.json(result);
   } catch (e) {
-    error(resp, e);
+    errorMessage(res, e.errorMessage);
   }
-};
+};s
 
-export const methods = {
-  getAddresses,
-  getAddress,
-  addAddress,
-  updateAddress,
-};
+export { getAddresses, getAddress, addAddress, updateAddress };

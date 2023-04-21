@@ -1,19 +1,29 @@
 import moment from "moment/moment";
 import { invoicesServices } from "../services/invoices";
+import { errorMessage } from "../helpers/errorHelper";
 
 const getInvoices = async (req, res) => {
-  const resp = await invoicesServices.getInvoices();
-  res.json(resp);
+  try {
+    const resp = await invoicesServices.getInvoices();
+    res.json(resp);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const getInvoice = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const resp = await invoicesServices.getInvoice(id);
-  res.json(resp);
+    const resp = await invoicesServices.getInvoice(id);
+    res.json(resp);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const addInvoice = async (req, res) => {
+  try {
     //{ contract_id = id del contrato
     // from = fecha en que se genera la factura
     let data = req.body;
@@ -22,31 +32,36 @@ const addInvoice = async (req, res) => {
 
     const result = await invoicesServices.addInvoice(data);
     res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const updateInvoice = async (req, res) => {
-  const {id} = req.params;
+  try {
+    const { id } = req.params;
 
-  let data = {
-    updated_at: moment().format("YYYY-MM-DD"),
-    state: "Pagada",
-  };
+    let data = {
+      updated_at: moment().format("YYYY-MM-DD"),
+      state: "Pagada",
+    };
 
-  const result = await invoicesServices.updateInvoice(id, data);
-  res.json(result);
+    const result = await invoicesServices.updateInvoice(id, data);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
 const deleteInvoice = async (req, res) => {
+  try {
     const { id } = req.params;
-    
+
     const result = await invoicesServices.deleteInvoice(id);
     res.json(result);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
+  }
 };
 
-export const methods = {
-  getInvoices,
-  getInvoice,
-  addInvoice,
-  updateInvoice,
-  deleteInvoice,
-};
+export { getInvoices, getInvoice, addInvoice, updateInvoice, deleteInvoice };

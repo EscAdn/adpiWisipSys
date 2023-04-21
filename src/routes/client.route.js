@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { methods as clients } from "../controllers/client.controller";
+import { getClient, getClients, addClient, updateClient, deleteClient } from "../controllers/client.controller";
 import validateCreated from "../validators/client.validator";
 
 const router = Router();
 
 // EndPoinst
-router.get("/", clients.getClients);
-router.get("/:id", clients.getClient);
-router.post("/", validateCreated, clients.addClient);
-router.put("/:id", validateCreated, clients.updateClient);
-router.delete("/:id", clients.deleteClient);
+router.get("/", getClients);
+router.get("/:id", getClient);
+router.post("/", validateCreated, addClient);
+router.put("/:id", validateCreated, updateClient);
+router.delete("/:id", deleteClient);
 
 export default router;

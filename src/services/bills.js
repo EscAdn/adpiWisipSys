@@ -71,7 +71,7 @@ const deleteBill = async (id) => {
 }
 
 
-export const billsServices = {
+export const services = {
 	getBills, 
 	getBill, 
 	addBill, 

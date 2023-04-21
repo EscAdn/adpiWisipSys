@@ -1,13 +1,13 @@
 import moment from "moment/moment";
-import { getConnection } from "./../database/connection";
+import { plansServices } from "./../services/plans";
+import { errorMessage } from "../helpers/errorHelper";
 
 const getPlans = async (req, resp) => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM `plans`");
+    const result = await plansServices.getPlans();
     resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -19,10 +19,10 @@ const getPlan = async (req, resp) => {
     const result = await connection.query(
       "SELECT * FROM `plans` WHERE id = ?",
       id
-    );
+      );
     resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -36,8 +36,8 @@ const addPlan = async (req, resp) => {
     const connection = await getConnection();
     const result = await connection.query("INSERT INTO `plans` SET ?", data);
     resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
   }
 };
 
@@ -51,17 +51,11 @@ const updatePlan = async (req, resp) => {
     const result = await connection.query("UPDATE `plans` SET ? WHERE id = ?", [
       data,
       id,
-    ]);
+      ]);
     resp.json(result);
-  } catch (error) {
-    resp.send(error.message);
+  } catch (e) {
+    errorMessage(res, e.errorMessage);
   }
 };
 
-export const methods = {
-  getPlans,
-  getPlan,
-  addPlan,
-  updatePlan,
-  // deletePlan,
-};
+export { getPlans, getPlan, addPlan, updatePlan };

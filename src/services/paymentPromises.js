@@ -1,4 +1,4 @@
-import { getConnection } from './../database/connection';
+import { getConnection } from "./../database/connection";
 
 const getPaymentsPromises = async () => {
   try {
@@ -25,7 +25,6 @@ const getPaymentPromise = async (id) => {
 
 const addPaymentPromise = async (data) => {
   try {
-    
     const conn = await getConnection();
     const result = await conn.query(
       "INSERT INTO `payment_promises` SET ? ",
@@ -64,25 +63,25 @@ const deletePaymentPromise = async (id) => {
 };
 
 const updateStatePaymentPromises = async (now) => {
-	try {
-		const conn = await getConnection();
-		const result = await conn.query(
-			`UPDATE payment_promises 
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `UPDATE payment_promises 
 			SET state='Vencida' 
 			WHERE state = 'Activa' 
 			AND valid_until < '${now}'`
-			);
-		return result;
-	} catch(e) {
-		return {error: e.message};
-	}
-}
+    );
+    return result;
+  } catch (e) {
+    return { error: e.message };
+  }
+};
 
-export const methods = {
+export const paymentServices = {
   getPaymentsPromises,
   getPaymentPromise,
   addPaymentPromise,
   updatePaymentPromise,
   deletePaymentPromise,
-  updateStatePaymentPromises
+  updateStatePaymentPromises,
 };
