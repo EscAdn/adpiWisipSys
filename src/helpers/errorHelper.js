@@ -1,5 +1,4 @@
 export const errorHTTP = (res, err) => {
-  console.log("Error", err);
   res.status(500);
   res.send({ error: err });
 };

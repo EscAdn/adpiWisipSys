@@ -8,11 +8,11 @@ import { errorMessage } from "./../helpers/errorHelper";
 export const addUser = async (req, res) => {
   try {
     req = matchedData(req);
-    console.log(req);
     const existeEmail = await userServices.getUserExist(req.email);
 
     if (existeEmail.length > 0) {
-      throw new Error("EMAIL_EXIST");
+      errorMessage(res, "EMAIL_EXIST");
+      return;
     }
 
     if (!req.authorization) {
@@ -26,9 +26,11 @@ export const addUser = async (req, res) => {
     const result = await userServices.addUser(dataUser);
 
     if (result.err) {
-      throw new Error(result.err);
+      errorMessage(res, e.message);
+      return;
     }
     delete dataUser.password;
+    dataUser.id = result.insertId;
 
     const data = {
       token: await generateJWT(dataUser),

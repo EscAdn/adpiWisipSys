@@ -6,9 +6,10 @@ const generateJWT = async (users) => {
     {
       id: users.id,
       name: users.name,
+      role: "Rol",
     },
     JWT_FIRMA,
-    { expiresIn: "2h" }
+    { expiresIn: "24h" }
   );
 
   return sing;
