@@ -58,11 +58,12 @@ export const loginUser = async (req, res) => {
     }
 
     const password = await compare(req.password, result[0].password);
-    delete result[0].password;
 
     if (!password) {
       throw new Error("PASSWORD_INCORRECT");
     }
+    delete result[0].password;
+    delete result[0].telephone;
 
     const data = {
       token: await generateJWT(result),
