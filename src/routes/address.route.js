@@ -13,8 +13,20 @@ const router = Router();
 
 // Métodos
 router.get("/", authValidate, validateAccessRol(["admin"]), getAddresses);
-router.get("/:id", authValidate, validateAccessRol(["admin"]) getAddress);
-router.post("/", validateCreated, authValidate, validateAccessRol(["admin"]), addAddress);
-router.put("/:id", validateCreated, authValidate, validateAccessRol(["admin"]), updateAddress);
+router.get("/:id", authValidate, validateAccessRol(["admin"]), getAddress);
+router.post(
+  "/",
+  validateCreated,
+  authValidate,
+  validateAccessRol(["admin"]),
+  addAddress
+);
+router.put(
+  "/:id",
+  validateCreated,
+  authValidate,
+  validateAccessRol(["admin"]),
+  updateAddress
+);
 
 export default router;
