@@ -29,7 +29,7 @@ const getUser = async (email) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, name, email, password, autorization, telephone, created_at, updated_at FROM users WHERE email = ?`,
+      `SELECT id, name, email, password, authorization, telephone, created_at, updated_at FROM users WHERE email = ?`,
       email
     );
     return result;
