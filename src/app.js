@@ -1,11 +1,3 @@
-//
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//
-// En la BD mosificar created_at en address o nodes
-// agregar day_cut en contracts
-//
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";

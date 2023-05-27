@@ -44,6 +44,6 @@ const updateAddress = async (req, resp) => {
   } catch (e) {
     errorMessage(res, e.errorMessage);
   }
-};s
+};
 
 export { getAddresses, getAddress, addAddress, updateAddress };

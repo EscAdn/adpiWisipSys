@@ -6,11 +6,21 @@ const getInvoices = async () => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "SELECT iv.`id`, cl.name as client, ad.address, pl.name as plan, pl.price, iv.from, iv.`to`, iv.`created_at`, iv.`updated_at`, iv.`die_date`, iv.`state` FROM `invoices` as iv, contracts as ct, clients as cl, plans as pl, addresses as ad WHERE iv.contract_id = ct.id AND ct.client_id = cl.id AND ct.plan_id = pl.id AND cl.address_id=ad.id ORDER BY iv.id DESC;"
+      `SELECT iv.id, cl.name as client, 
+      ad.address, pl.name as plan, pl.price, 
+      iv.from, iv.to, iv.created_at, iv.updated_at, 
+      iv.die_date, iv.state 
+      FROM invoices as iv, contracts as ct, clients as cl, 
+      plans as pl, addresses as ad 
+      WHERE iv.contract_id = ct.id 
+      AND ct.client_id = cl.id 
+      AND ct.plan_id = pl.id 
+      AND cl.address_id=ad.id 
+      ORDER BY iv.id DESC;`
     );
     return result;
   } catch (error) {
-    return { err: error.message };
+    return error.message;
   }
 };
 
@@ -18,12 +28,22 @@ const getInvoice = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "SELECT iv.`id`, cl.name as client, ad.address, pl.name as plan, pl.price, iv.`from`, iv.`to`, iv.`created_at`, iv.`updated_at`, iv.`die_date`, iv.`state` FROM `invoices` as iv, contracts as ct, clients as cl, plans as pl, addresses as ad WHERE iv.contract_id = ct.id AND ct.client_id = cl.id AND ct.plan_id = pl.id AND cl.addrss_id=ad.id AND iv.id = ? ORDER BY iv.id DESC;",
+      `SELECT iv.id, cl.name as client, ad.address, 
+      pl.name as plan, pl.price, iv.from, iv.to, iv.created_at, 
+      iv.updated_at, iv.die_date, iv.state 
+      FROM invoices as iv, contracts as ct, 
+      clients as cl, plans as pl, addresses as ad 
+      WHERE iv.contract_id = ct.id 
+      AND ct.client_id = cl.id 
+      AND ct.plan_id = pl.id 
+      AND cl.addrss_id=ad.id 
+      AND iv.id = ? 
+      ORDER BY iv.id DESC;`,
       id
     );
     return result;
   } catch (error) {
-    return { err: error.message };
+    return error.message;
   }
 };
 
@@ -84,20 +104,21 @@ const addInvoice = async (data) => {
       return result;
     }
   } catch (error) {
-    return { err: error.message };
+    return error.message;
   }
 };
 
 const updateInvoice = async (id, data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query("UPDATE `invoices` SET ? WHERE id = ?", [
+    const result = await conn.query(
+      `UPDATE invoices SET ? WHERE id = ?`, [
       data,
       id,
     ]);
     return result;
   } catch (error) {
-    return { err: error.message };
+    return error.message;
   }
 };
 
@@ -105,12 +126,12 @@ const deleteInvoice = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "UPDATE `invoices` SET state = 'Anulada' WHERE id = ?",
+      `UPDATE invoices SET state = 'Anulada' WHERE id = ?`,
       id
     );
     return result;
   } catch (error) {
-    return { err: error.message };
+    return error.message;
   }
 };
 

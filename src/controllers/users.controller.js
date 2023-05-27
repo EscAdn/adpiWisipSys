@@ -8,7 +8,7 @@ import { errorMessage } from "./../helpers/errorHelper";
 export const addUser = async (req, res) => {
   try {
     req = matchedData(req);
-    console.log(req);
+    // console.log(req);
     const existeEmail = await userServices.getUserExist(req.email);
 
     if (existeEmail.length > 0) {
@@ -42,6 +42,14 @@ export const addUser = async (req, res) => {
   }
 };
 
+export const getUsers = async (req, res) => {
+  try {
+    return res.json( await userServices.getUsers())
+  } catch(e) {
+    errorMessage(res, e.message)
+  }
+}
+
 export const loginUser = async (req, res) => {
   try {
     req = matchedData(req);
@@ -54,7 +62,7 @@ export const loginUser = async (req, res) => {
     if (result.err) {
       throw new Error(result.err);
     }
-
+    
     const password = await compare(req.password, result[0].password);
     delete result[0].password;
 

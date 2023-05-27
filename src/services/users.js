@@ -4,7 +4,9 @@ const getUsers = async () => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, name, email, password, telephone, authorization, created_at, updated_at FROM users`
+      `SELECT id, name, email, password, 
+      telephone, authorization, 
+      created_at, updated_at FROM users`
     );
     return result;
   } catch (e) {

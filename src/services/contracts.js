@@ -36,7 +36,14 @@ const getContracts = async () => {
   try {
     const connection = await getConnection();
     const result = await connection.query(
-      "SELECT c.*, cl.name as client, p.name as plan, p.price, a.address FROM `contracts` as c, `clients` as cl, `plans` as p, `addresses` as a WHERE cl.id = c.client_id AND p.id=c.plan_id AND a.id=cl.address_id ORDER BY c.id ASC;"
+      `SELECT c.*, cl.name as client, p.name as plan, 
+      p.price, a.address 
+      FROM contracts as c, clients as cl,
+      plans as p, addresses as a 
+      WHERE cl.id = c.client_id 
+      AND p.id=c.plan_id 
+      AND a.id=cl.address_id 
+      ORDER BY c.id ASC;`
     );
     return result;
   } catch (error) {
@@ -47,8 +54,8 @@ const getContracts = async () => {
 const getContract = async (id) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `contracts` WHERE id = ?",
+    const result = await connectionquery(
+      `SELECT * FROM contracts WHERE id = ?`,
       id
     );
     return result;
@@ -60,7 +67,9 @@ const getContract = async (id) => {
 const addContract = async (data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query("INSERT INTO `contracts` SET ?", data);
+    const result = await conn.query(
+      `INSERT INTO contracts SET ?`
+      , data);
     return result;
   } catch (error) {
     return error.message;
@@ -70,7 +79,8 @@ const addContract = async (data) => {
 const updateContract = async (id, data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query("UPDATE `contracts` SET ? WHERE id = ?", [
+    const result = await conn.query(
+      `UPDATE contracts SET ? WHERE id = ?`, [
       data,
       id,
     ]);
@@ -84,7 +94,7 @@ const deleteContract = async (id) => {
   try {
     const connection = await getConnection();
     const result = await connection.query(
-      "DELETE FROM `contracts` WHERE id = ?",
+      `DELETE FROM contracts WHERE id = ?`,
       id
     );
     return result;
