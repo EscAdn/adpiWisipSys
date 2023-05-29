@@ -11,6 +11,7 @@ export const authValidate = async (req, res, next) => {
     const token = req.headers.authorization.split(" ").pop();
 
     const tokenData = await verifyToken(token);
+    console.log(tokenData, token);
 
     if (tokenData.id) {
       next();
