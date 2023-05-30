@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getPaymentsPromises, getPaymentPromise, addPaymentPromise, updatePaymentPromise, deletePaymentPromise } from "./../controllers/payments.controller";
+import { validateAccessRol } from "./../midelwares/rol";
 
 const router = Router();
 

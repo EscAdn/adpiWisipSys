@@ -1,14 +1,15 @@
 import { Router } from "express";
 import { getClient, getClients, addClient, updateClient, deleteClient } from "../controllers/client.controller";
 import validateCreated from "../validators/client.validator";
+import { validateAccessRol } from "./../midelwares/rol";
 
 const router = Router();
 
 // EndPoinst
-router.get("/", getClients);
-router.get("/:id", getClient);
-router.post("/", validateCreated, addClient);
-router.put("/:id", validateCreated, updateClient);
-router.delete("/:id", deleteClient);
+router.get("/", validateAccessRol(["admin"]), getClients);
+router.get("/:id", validateAccessRol(["admin"]), getClient);
+router.post("/", validateCreated, validateAccessRol(["admin"]), addClient);
+router.put("/:id", validateCreated, validateAccessRol(["admin"]), updateClient);
+router.delete("/:id", validateAccessRol(["admin"]), deleteClient);
 
 export default router;

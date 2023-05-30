@@ -5,7 +5,7 @@ export const validateRegister = [
   check("name").exists().notEmpty().isString(),
   check("email").exists().notEmpty().isEmail(),
   check("telephone").exists(),
-  check("authorization"),
+  check("roles").exists(),
   check("password").exists().notEmpty().isLength({ min: 5, max: 15 }),
   (req, res, next) => {
     return validateResults(req, res, next);

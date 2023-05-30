@@ -1,12 +1,20 @@
-import {Router} from "express";
-import {getBills, getBill, addBill, updateBill, deleteBill} from "./../controllers/bill.componets";
+import { Router } from "express";
+import {
+  getBills,
+  getBill,
+  addBill,
+  updateBill,
+  deleteBill,
+} from "./../controllers/bill.componets";
+import validateCreated from "../validators/bills.validator";
+import { validateAccessRol } from "./../midelwares/rol";
 
 const router = Router();
 
-router.get("/", getBills);
-router.get("/:id", getBill);
-router.post("/", addBill);
-router.put("/:id", updateBill);
-router.delete("/:id", deleteBill);
+router.get("/", validateAccessRol(["admin"]), getBills);
+router.get("/:id", validateAccessRol(["admin"]),getBill);
+router.post("/", validateCreated, validateAccessRol(["admin"]), addBill);
+router.put("/:id", validateCreated, validateAccessRol(["admin"]), updateBill);
+router.delete("/:id", validateAccessRol(["admin"]), deleteBill);
 
 export default router;

@@ -8,32 +8,37 @@ import { errorMessage } from "./../helpers/errorHelper";
 export const addUser = async (req, res) => {
   try {
     req = matchedData(req);
-    // console.log(req);
+    // Verificar que el correo no est registrado
     const existeEmail = await userServices.getUserExist(req.email);
 
     if (existeEmail.length > 0) {
-      throw new Error("EMAIL_EXIST");
+      errorMessage(res, "EMAIL_EXIST");
+      return;
     }
 
-    if (!req.authorization) {
-      delete req.authorization;
-    }
+    // if (!req.authorization) {
+    //   delete req.authorization;
+    // }
 
     const password = await encryp(req.password);
-    req.updated_at = moment().format("YYYY-MM-DD");
     req.created_at = moment().format("YYYY-MM-DD");
-    const dataUser = { ...req, password };
-    const result = await userServices.addUser(dataUser);
+    req.updated_at = moment().format("YYYY-MM-DD");
+    const user = { ...req, password };
+    const result = await userServices.addUser(user);
 
     if (result.err) {
-      throw new Error(result.err);
+      errorMessage(res, result.err);
+      return;
     }
-    delete dataUser.password;
 
+    delete user.password;
+    user.id = result.insertId;
+    
     const data = {
-      token: await generateJWT(dataUser),
-      user: dataUser,
+      token: await generateJWT(user),
+      user,
     };
+
     result.data = data;
 
     res.json(result);
@@ -56,19 +61,23 @@ export const loginUser = async (req, res) => {
     const result = await userServices.getUser(req.email);
 
     if (result.length === 0) {
-      throw new Error("EMAIL_INCORRECT");
+      errorMessage(res, "EMAIL_INCORRECT");
+      return
     }
 
     if (result.err) {
-      throw new Error(result.err);
+      errorMessage(res, result.err);
+      return
     }
     
     const password = await compare(req.password, result[0].password);
-    delete result[0].password;
 
     if (!password) {
-      throw new Error("PASSWORD_INCORRECT");
+      errorMessage(res, "PASSWORD_INCORRECT");
+      return
     }
+    delete result[0].password;
+    delete result[0].telephone;
 
     const data = {
       token: await generateJWT(result),
