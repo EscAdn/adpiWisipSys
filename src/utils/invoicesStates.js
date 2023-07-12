@@ -65,13 +65,12 @@ export const disableContracts = async (dia, hoy) => {
 };
 
 // Retorna un objeto con las fechas para el registro de facturas
-export const getFechas = (from, corte = 3) => {
+export const getFechas = (from, corte = 4) => {
   let data = {};
-  data.to = moment(from).add(1, "M").add(-1, "d").format("YYYY-MM-DD");
-  data.created_at = moment().format("YYYY-MM-DD");
-  data.updated_at = moment().format("YYYY-MM-DD");
   data.die_date = moment(from).add(corte, "d").format("YYYY-MM-DD");
   data.state = "Activa"; //Vencida, Pagada
+  data.created_at = moment().format("YYYY-MM-DD");
+  data.updated_at = data.created_at;
 
   return data;
 };

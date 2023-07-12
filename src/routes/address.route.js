@@ -12,20 +12,16 @@ import { validateAccessRol } from "./../midelwares/rol";
 const router = Router();
 
 // Métodos
-router.get("/", authValidate, validateAccessRol(["admin"]), getAddresses);
-router.get("/:id", authValidate, validateAccessRol(["admin"]), getAddress);
+router.get("/", getAddresses);
+router.get("/:id", getAddress);
 router.post(
   "/",
-  validateCreated,
-  authValidate,
-  validateAccessRol(["admin"]),
+  validateCreated, 
   addAddress
 );
 router.put(
   "/:id",
   validateCreated,
-  authValidate,
-  validateAccessRol(["admin"]),
   updateAddress
 );
 

@@ -6,7 +6,7 @@ const getInvoices = async () => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT iv.id, cl.name as client, 
+      `SELECT iv.id, cl.id as client_Id, cl.name as client, 
       ad.address, pl.name as plan, pl.price, 
       iv.from, iv.to, iv.created_at, iv.updated_at, 
       iv.die_date, iv.state 
@@ -28,7 +28,7 @@ const getInvoice = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT iv.id, cl.name as client, ad.address, 
+      `SELECT iv.id, cl.id as client_id, cl.name as client, ad.address, 
       pl.name as plan, pl.price, iv.from, iv.to, iv.created_at, 
       iv.updated_at, iv.die_date, iv.state 
       FROM invoices as iv, contracts as ct, 
@@ -36,7 +36,7 @@ const getInvoice = async (id) => {
       WHERE iv.contract_id = ct.id 
       AND ct.client_id = cl.id 
       AND ct.plan_id = pl.id 
-      AND cl.addrss_id=ad.id 
+      AND cl.address_id=ad.id 
       AND iv.id = ? 
       ORDER BY iv.id DESC;`,
       id
@@ -78,33 +78,32 @@ const updateInvoicesDie = async (die_date) => {
 	}
 }
 
-// recibe {contract_id, from, date}
+// recibe {contract_id, issue, die_date, day, mounth}
 const addInvoice = async (data) => {
   try {
     const conn = await getConnection();
+    const {day, mount, year, contract_id, from, to} = data;
 
-    // Esto esta en contracts Services,
-    // la función busca los contratos
-    // ya sea segun un contrato o en la fecha del día
+    // Comprobar si existe una factura emitida para el contrato en este año y mes...
     const existInvoice = await contractsServices.getContractsOfDate(
-    	data.date, data.from, data.contract_id
-    	);
+      year, mount, contract_id
+      );
 
-    // return existInvoice;
-    if (existInvoice.length === 0) {
+    if (existInvoice.length >= 1) {
       return {
-        exist: "El contrato ya cuenta con la factura del mes creada",
-        data: existInvoice.length,
+        exist: `El contrato ya cuenta con la factura`,
+        invoice: existInvoice
       };
     } else {
-    	delete data.date;
-      data = { ...data, ...getFechas(data.from) };
-      
-      const result = await conn.query("INSERT INTO `invoices` SET ?", data);
+      delete data.day; delete data.mount; delete data.year;
+
+      data = { ...data, ...getFechas(from) };
+
+      const result = await conn.query(`INSERT INTO invoices SET ?`, data);
       return result;
     }
   } catch (error) {
-    return error.message;
+    return {error: error.message};
   }
 };
 
@@ -114,7 +113,7 @@ const updateInvoice = async (id, data) => {
     const result = await conn.query(
       `UPDATE invoices SET ? WHERE id = ?`, [
       data,
-      id,
+      id
     ]);
     return result;
   } catch (error) {
@@ -126,7 +125,7 @@ const deleteInvoice = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `UPDATE invoices SET state = 'Anulada' WHERE id = ?`,
+      `DELETE invoices WHERE id = ?`,
       id
     );
     return result;
@@ -139,5 +138,6 @@ export const invoicesServices = {
   getInvoices,
   getInvoice,
   addInvoice,
+  updateInvoice,
   deleteInvoice,
 };

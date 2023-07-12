@@ -2,10 +2,11 @@ import jwt from "jsonwebtoken";
 const JWT_FIRMA = process.env.JWT_FIRMA;
 
 const generateJWT = async (users) => {
+  // console.log(users)
   const sing = jwt.sign(
     {
-      id: users[0].id,
-      user: users[0].name,
+      id: users.id,
+      user: users.name,
       role: "roles",
     },
     JWT_FIRMA,

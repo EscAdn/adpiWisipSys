@@ -22,14 +22,24 @@ const getInvoice = async (req, res) => {
   }
 };
 
+// const getStateInvoice = async (req, resp) => {
+//   try {
+//     const { state } = req.body;
+    // const result = await invoicesServices.getStateInvoice(state);
+//     resp.json(result)
+//   } catch(e) {
+//     errorMessage(res, e.errorMessage)
+//   }
+// }
+
+// {contrac_id, from, to}
 const addInvoice = async (req, res) => {
   try {
-    //{ contract_id = id del contrato
-    // from = fecha en que se genera la factura
     let data = req.body;
     // Obtener el día de la fecha para buscar facturas que coincidan
-    data.date = moment(data.from, "YYYY-MM-DD").date();
-
+    data.day = data.from.split("-")[2];
+    data.mount = data.from.split("-")[1];
+    data.year = data.from.split("-")[0];
     const result = await invoicesServices.addInvoice(data);
     res.json(result);
   } catch (e) {
@@ -37,13 +47,15 @@ const addInvoice = async (req, res) => {
   }
 };
 
+// {state}  :id
 const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
+    const {state} = req.body;
 
     let data = {
       updated_at: moment().format("YYYY-MM-DD"),
-      state: "Pagada",
+      state,
     };
 
     const result = await invoicesServices.updateInvoice(id, data);

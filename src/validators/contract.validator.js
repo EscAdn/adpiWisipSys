@@ -11,7 +11,7 @@ const validateCreated = [
   check("netmask").exists().isIP(),
   check("mac_address").exists().isMACAddress(),
   check("details").exists().isString(),
-  check("node_id").exists().isNumeric(),
+  // check("node_id").isNumeric(),
   (req, res, next) => {
     validateResults(req, res, next);
   },

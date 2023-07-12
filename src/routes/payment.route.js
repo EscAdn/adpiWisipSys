@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { getPaymentsPromises, getPaymentPromise, addPaymentPromise, updatePaymentPromise, deletePaymentPromise } from "./../controllers/payments.controller";
+import { getPayments, getPayment, addPayment, updatePayment, deletePayment } from './../controllers/payments.controller'
 import { validateAccessRol } from "./../midelwares/rol";
+import {validateCreated, validateUpdate} from './../validators/payments.validators'
 
 const router = Router();
 
-// Endpoints
-router.get("/", getPaymentsPromises);
-router.get("/:id", getPaymentPromise);
-router.post("/", addPaymentPromise);
-router.put("/:id", updatePaymentPromise);
-router.delete("/:id", deletePaymentPromise);
+// Endpoinst
+router.get("/", getPayments);
+router.get("/:id", getPayment);
+router.post("/", validateCreated, addPayment);
+router.put("/:id", validateUpdate, updatePayment);
+router.delete("/:id", deletePayment);
 
 export default router;

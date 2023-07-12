@@ -11,9 +11,9 @@ import { validateAccessRol } from "./../midelwares/rol";
 const router = Router();
 
 // Endpoints
-router.get("/", validateAccessRol(["admin"]), getPaymentsTypes);
-router.get("/:id", validateAccessRol(["admin"]), getPaymentType);
-router.post("/", validateCreated, validateAccessRol(["admin"]), addPaymentType);
-router.put("/:id", validateCreated, validateAccessRol(["admin"]), updategetPaymentType);
+router.get("/", getPaymentsTypes);
+router.get("/:id", getPaymentType);
+router.post("/", validateCreated, addPaymentType);
+router.put("/:id", validateCreated, updategetPaymentType);
 
 export default router;

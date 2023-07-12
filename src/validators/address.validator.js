@@ -2,7 +2,7 @@ import { check } from "express-validator";
 import validateResults from "./../helpers/validateHelper";
 
 const validateCreated = [
-  check("address").exists().isString(),
+  check("name").exists().isString(),
   (req, res, next) => {
     validateResults(req, res, next);
   },

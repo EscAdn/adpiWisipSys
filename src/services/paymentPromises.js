@@ -3,7 +3,7 @@ import { getConnection } from "./../database/connection";
 const getPaymentsPromises = async () => {
   try {
     const conn = await getConnection();
-    const resut = await conn.query("SELECT * FROM payment_promises;");
+    const resut = await conn.query(`SELECT id, valid_until, state, contract_id, created_at, updated_at FROM payment_promises`);
     return resut;
   } catch (error) {
     return { err: error.message };
@@ -14,7 +14,7 @@ const getPaymentPromise = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "SELECT * FROM payment_promises WHERE id = ?;",
+      `SELECT id, valid_until, state, contract_id, created_at, updated_at FROM payment_promises WHERE id = ?`,
       id
     );
     return result;
@@ -27,7 +27,7 @@ const addPaymentPromise = async (data) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "INSERT INTO `payment_promises` SET ? ",
+      `INSERT INTO payment_promises SET ? `,
       data
     );
     return result;
@@ -40,7 +40,7 @@ const updatePaymentPromise = async (id, data) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      "UPDATE `payment_promises` SET ? WHERE id = ?",
+      `UPDATE payment_promises SET ? WHERE id = ?`,
       [data, id]
     );
     return result;
@@ -53,7 +53,7 @@ const deletePaymentPromise = async (id) => {
   try {
     const conn = await getConnection();
     const resut = await conn.query(
-      "DELETE * FROM  payment_promises WHERE id = ?",
+      `DELETE * FROM payment_promises WHERE id = ?`,
       id
     );
     return resut;

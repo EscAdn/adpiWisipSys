@@ -30,9 +30,10 @@ export const addUser = async (req, res) => {
       errorMessage(res, result.err);
       return;
     }
-
+    
     delete user.password;
     user.id = result.insertId;
+    
     
     const data = {
       token: await generateJWT(user),
@@ -46,14 +47,6 @@ export const addUser = async (req, res) => {
     errorMessage(res, error.message);
   }
 };
-
-export const getUsers = async (req, res) => {
-  try {
-    return res.json( await userServices.getUsers())
-  } catch(e) {
-    errorMessage(res, e.message)
-  }
-}
 
 export const loginUser = async (req, res) => {
   try {
@@ -69,7 +62,7 @@ export const loginUser = async (req, res) => {
       errorMessage(res, result.err);
       return
     }
-    
+    console.log(result)
     const password = await compare(req.password, result[0].password);
 
     if (!password) {
@@ -81,7 +74,7 @@ export const loginUser = async (req, res) => {
 
     const data = {
       token: await generateJWT(result),
-      user: result,
+      user: result[0],
     };
 
     res.json(data);
@@ -89,3 +82,43 @@ export const loginUser = async (req, res) => {
     errorMessage(res, error.message);
   }
 };
+
+
+export const getUsers = async (req, res) => {
+  try {
+    res.json( await userServices.getUsers())
+  } catch(e) {
+    errorMessage(res, e.message)
+  }
+}
+
+export const getUser = async (req, res) => {
+  try {
+    const {id} = req.params
+    const result = await userServices.getUser(id);
+    res.json(result)
+  } catch(e) {
+    errorMessage(res, e.message)
+  }
+}
+
+export const updatedUser = async (req, res) => {
+  try {
+    const {id} = req.params
+    req = matchedData(req)
+    const result = await userServices.updatedUser(id, req)
+    res.json(result)
+  } catch(e) {
+    errorMessage(res, e.message)
+  }
+}
+
+export const deleteUser = async (req, res) => {
+  try {
+    const {id} = req.params
+    const result = await userServices.deleteUser(id)
+    res.json(result)
+  } catch(e) {
+    errorMessage(res, e.message)
+  }
+}

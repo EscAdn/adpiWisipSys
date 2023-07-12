@@ -8,7 +8,7 @@ const validateCreate = [
     .exists()
     .isNumeric()
     .custom((value, { req }) => {
-      if (value === 8 || value === 16) {
+      if (value === 4 || value === 8 || value === 16) {
         return true;
       }
       throw new Error("El número de puertos no es valido");
@@ -18,6 +18,4 @@ const validateCreate = [
   },
 ];
 
-export const validated = {
-  validateCreate,
-};
+export default validateCreate;
