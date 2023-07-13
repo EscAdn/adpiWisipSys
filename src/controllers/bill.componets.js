@@ -1,10 +1,11 @@
 import moment from "moment";
-import { services } from "./../services/bills";
+import { buillsServices } from "./../services/bills";
+import { invoicesServices } from "./../services/invoices";
 import { errorMessage } from "../helpers/errorHelper";
 
 const getBills = async (req, res) => {
   try {
-    const resut = await services.getBills();
+    const resut = await buillsServices.getBills();
     res.json(resut);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -15,7 +16,7 @@ const getBill = async (req, res) => {
   try {
     let { id } = req.params;
 
-    const resut = await services.getBill(id);
+    const resut = await buillsServices.getBill(id);
     res.json(resut);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -30,7 +31,30 @@ const addBill = async (req, res) => {
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
 
-    const resut = await services.addBill(data);
+    if (data.invoice) {
+      const invoiceState = await invoicesServices.getInvoiceState(data.invoice);
+
+      if (invoiceState[0].state === "Pagada") {
+        errorMessage(res, "INVOICE_NOT_ACTIVE");
+        return;
+      } else {
+        const invoiceData = {
+          state: "Pagada",
+          updated_at: data.updated_at,
+        };
+
+        const updateStateInvoice = await invoicesServices.updateInvoice(
+          data.invoice,
+          invoiceData
+        );
+
+        if (updateStateInvoice.err) {
+          errorMessage(res, "ERR_STATE_INVOICE");
+        }
+      }
+    }
+
+    const resut = await buillsServices.addBill(data);
     res.json(resut);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -45,7 +69,7 @@ const updateBill = async (req, res) => {
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
 
-    const resut = await services.updateBill(id, data);
+    const resut = await buillsServices.updateBill(id, data);
     res.json(resut);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -55,7 +79,7 @@ const updateBill = async (req, res) => {
 const deleteBill = async (req, res) => {
   try {
     let { id } = req.params;
-    const resut = await services.deleteBill(id);
+    const resut = await buillsServices.deleteBill(id);
     res.json(resut);
   } catch (e) {
     errorMessage(res, e.errorMessage);

@@ -20,7 +20,7 @@ const getInvoices = async () => {
     );
     return result;
   } catch (error) {
-    return error.message;
+    return { err: error.message };
   }
 };
 
@@ -43,27 +43,29 @@ const getInvoice = async (id) => {
     );
     return result;
   } catch (error) {
-    return error.message;
+    return { err: error.message };
   }
 };
 
-const getInvoiceState = async (state) => {
-	try {
-		const conn = await getConnection();
-		const result = await conn.query(
-			`SELECT i.* FROM invoices as i, contracts as c 
-			WHERE c.id=i.contract_id AND i.state="${state}";`
-			);
-	} catch(e) {
-		return e.message;
-	}
-}
+const getInvoiceState = async (id) => {
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `SELECT state FROM invoices 
+      WHERE id= ?;`,
+      id
+    );
+    return result;
+  } catch (e) {
+    return { err: error.message };
+  }
+};
 
 const updateInvoicesDie = async (die_date) => {
-	try {
-		const conn = await getConnection();
-		const result = await conn.query(
-			`UPDATE invoices SET state='Vencida' 
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `UPDATE invoices SET state='Vencida' 
 			WHERE die_date <= '${die_date}' 
 			AND state = 'Activa' 
 			AND NOT EXISTS 
@@ -71,31 +73,35 @@ const updateInvoicesDie = async (die_date) => {
 			FROM payment_promises as pp 
 			WHERE pp.valid_until > '${die_date}' 
 			AND pp.state = 'Activa');`
-			);
-		return result;
-	} catch(e) {
-		return e.message;
-	}
-}
+    );
+    return result;
+  } catch (e) {
+    return { err: error.message };
+  }
+};
 
 // recibe {contract_id, issue, die_date, day, mounth}
 const addInvoice = async (data) => {
   try {
     const conn = await getConnection();
-    const {day, mount, year, contract_id, from, to} = data;
+    const { day, mount, year, contract_id, from, to } = data;
 
     // Comprobar si existe una factura emitida para el contrato en este año y mes...
     const existInvoice = await contractsServices.getContractsOfDate(
-      year, mount, contract_id
-      );
+      year,
+      mount,
+      contract_id
+    );
 
     if (existInvoice.length >= 1) {
       return {
         exist: `El contrato ya cuenta con la factura`,
-        invoice: existInvoice
+        invoice: existInvoice,
       };
     } else {
-      delete data.day; delete data.mount; delete data.year;
+      delete data.day;
+      delete data.mount;
+      delete data.year;
 
       data = { ...data, ...getFechas(from) };
 
@@ -103,40 +109,37 @@ const addInvoice = async (data) => {
       return result;
     }
   } catch (error) {
-    return {error: error.message};
+    return { err: error.message };
   }
 };
 
 const updateInvoice = async (id, data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `UPDATE invoices SET ? WHERE id = ?`, [
+    const result = await conn.query(`UPDATE invoices SET ? WHERE id = ?`, [
       data,
-      id
+      id,
     ]);
     return result;
   } catch (error) {
-    return error.message;
+    return { err: error.message };
   }
 };
 
 const deleteInvoice = async (id) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `DELETE invoices WHERE id = ?`,
-      id
-    );
+    const result = await conn.query(`DELETE invoices WHERE id = ?`, id);
     return result;
   } catch (error) {
-    return error.message;
+    return { err: error.message };
   }
 };
 
 export const invoicesServices = {
   getInvoices,
   getInvoice,
+  getInvoiceState,
   addInvoice,
   updateInvoice,
   deleteInvoice,

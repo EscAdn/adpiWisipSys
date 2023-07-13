@@ -30,11 +30,10 @@ export const addUser = async (req, res) => {
       errorMessage(res, result.err);
       return;
     }
-    
+
     delete user.password;
     user.id = result.insertId;
-    
-    
+
     const data = {
       token: await generateJWT(user),
       user,
@@ -55,19 +54,19 @@ export const loginUser = async (req, res) => {
 
     if (result.length === 0) {
       errorMessage(res, "EMAIL_INCORRECT");
-      return
+      return;
     }
 
     if (result.err) {
       errorMessage(res, result.err);
-      return
+      return;
     }
-    console.log(result)
+    console.log(result);
     const password = await compare(req.password, result[0].password);
 
     if (!password) {
       errorMessage(res, "PASSWORD_INCORRECT");
-      return
+      return;
     }
     delete result[0].password;
     delete result[0].telephone;
@@ -83,42 +82,41 @@ export const loginUser = async (req, res) => {
   }
 };
 
-
 export const getUsers = async (req, res) => {
   try {
-    res.json( await userServices.getUsers())
-  } catch(e) {
-    errorMessage(res, e.message)
+    res.json(await userServices.getUsers());
+  } catch (e) {
+    errorMessage(res, e.message);
   }
-}
+};
 
 export const getUser = async (req, res) => {
   try {
-    const {id} = req.params
-    const result = await userServices.getUser(id);
-    res.json(result)
-  } catch(e) {
-    errorMessage(res, e.message)
+    const { id } = req.params;
+    const result = await userServices.getUserById(id);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.message);
   }
-}
+};
 
 export const updatedUser = async (req, res) => {
   try {
-    const {id} = req.params
-    req = matchedData(req)
-    const result = await userServices.updatedUser(id, req)
-    res.json(result)
-  } catch(e) {
-    errorMessage(res, e.message)
+    const { id } = req.params;
+    req = matchedData(req);
+    const result = await userServices.updatedUser(id, req);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.message);
   }
-}
+};
 
 export const deleteUser = async (req, res) => {
   try {
-    const {id} = req.params
-    const result = await userServices.deleteUser(id)
-    res.json(result)
-  } catch(e) {
-    errorMessage(res, e.message)
+    const { id } = req.params;
+    const result = await userServices.deleteUser(id);
+    res.json(result);
+  } catch (e) {
+    errorMessage(res, e.message);
   }
-}
+};

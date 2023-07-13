@@ -1,7 +1,16 @@
 import { Router } from "express";
-import { validateAddInvoice, validateState } from "../validators/invoice.validator";
+import {
+  validateAddInvoice,
+  validateState,
+} from "../validators/invoice.validator";
+import {
+  getInvoices,
+  getInvoice,
+  addInvoice,
+  updateInvoice,
+  deleteInvoice,
+} from "./../controllers/invoice.controller";
 import { validateAccessRol } from "./../midelwares/rol";
-import { getInvoices, getInvoice, addInvoice, updateInvoice, deleteInvoice } from "./../controllers/invoice.controller";
 
 const router = Router();
 

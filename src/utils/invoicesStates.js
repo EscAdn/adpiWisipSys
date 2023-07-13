@@ -2,7 +2,7 @@ import moment from "moment";
 import { getConnection } from "../database/connection";
 import { contractsServices } from "../services/contracts";
 import { invoicesServices } from "../services/invoices";
-import { paymentServices } from "../services/paymentPromises"
+import { paymentServices } from "../services/payments";
 
 // Esto esta en contracts Services,
 // la función busca los contratos
@@ -28,14 +28,13 @@ export const getContracts = async (dia, hoy) => {
 
 // Actualizar estado de las promesas de pago
 export const statePaymentPromises = async (hoy) => {
-  await paymentServices.updateStatePaymentPromises(hoy);
-}
+  await paymentServices.updateStatePayment(hoy);
+};
 
 // Actualizar estado de las facturas y promesas de pago
 export const stateInvoices = async (hoy) => {
-  
   const result = await invoicesServices.updateInvoicesDie(hoy);
-}
+};
 
 // Deshabilitar contratos con facturas vencidas
 export const disableContracts = async (dia, hoy) => {
@@ -54,12 +53,15 @@ export const disableContracts = async (dia, hoy) => {
       // Deshabilitar en el router el contrato
 
       // Actualizar el contrato
-      const result = await contractsServices.updateContract(x.contract_id, data);
-    //   const conn = await getConnection();
-    //   const result = await conn.query("UPDATE `contracts` SET ? WHERE id = ?", [
-    //     data,
-    //     x.contract_id,
-    //   ]);
+      const result = await contractsServices.updateContract(
+        x.contract_id,
+        data
+      );
+      //   const conn = await getConnection();
+      //   const result = await conn.query("UPDATE `contracts` SET ? WHERE id = ?", [
+      //     data,
+      //     x.contract_id,
+      //   ]);
     });
   }
 };

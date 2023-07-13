@@ -25,7 +25,7 @@ const getInvoice = async (req, res) => {
 // const getStateInvoice = async (req, resp) => {
 //   try {
 //     const { state } = req.body;
-    // const result = await invoicesServices.getStateInvoice(state);
+// const result = await invoicesServices.getStateInvoice(state);
 //     resp.json(result)
 //   } catch(e) {
 //     errorMessage(res, e.errorMessage)
@@ -51,11 +51,11 @@ const addInvoice = async (req, res) => {
 const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
-    const {state} = req.body;
+    const { state } = req.body;
 
     let data = {
-      updated_at: moment().format("YYYY-MM-DD"),
       state,
+      updated_at: moment().format("YYYY-MM-DD"),
     };
 
     const result = await invoicesServices.updateInvoice(id, data);

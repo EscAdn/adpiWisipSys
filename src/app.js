@@ -31,7 +31,7 @@ app.use("/api/clients", clientRoute);
 app.use("/api/contracts", contractRoute);
 app.use("/api/payments", paymentRoute);
 app.use("/api/invoices", invoiceRoute);
-app.use("/api/payments_type", paymentTypeRoute);
+app.use("/api/payments_types", paymentTypeRoute);
 app.use("/api/bills", billRoute);
 app.use("/api/users", usersRoute);
 
