@@ -1,9 +1,9 @@
-import moment from "moment/moment";
+import moment from "moment";
 import { matchedData } from "express-validator";
-import { encryp, compare } from "./../helpers/passwordHelper";
+import { encryp, compare } from "./../helpers/passwordHelper.js";
 import { userServices } from "../services/users.js";
-import { generateJWT } from "./../helpers/jwtHelper";
-import { errorMessage } from "./../helpers/errorHelper";
+import { generateJWT } from "./../helpers/jwtHelper.js";
+import { errorMessage } from "./../helpers/errorHelper.js";
 
 export const addUser = async (req, res) => {
   try {

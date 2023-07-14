@@ -1,7 +1,7 @@
 import moment from "moment";
-import { buillsServices } from "./../services/bills";
-import { invoicesServices } from "./../services/invoices";
-import { errorMessage } from "../helpers/errorHelper";
+import { buillsServices } from "./../services/bills.js";
+import { invoicesServices } from "./../services/invoices.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getBills = async (req, res) => {
   try {

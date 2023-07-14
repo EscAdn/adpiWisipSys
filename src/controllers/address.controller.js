@@ -1,6 +1,6 @@
-import moment from "moment/moment";
-import { addressesServices } from "./../services/address";
-import { errorMessage } from "../helpers/errorHelper";
+import moment from "moment";
+import { addressesServices } from "./../services/address.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getAddresses = async (req, resp) => {
   try {
@@ -23,7 +23,7 @@ const getAddress = async (req, resp) => {
 
 const addAddress = async (req, resp) => {
   try {
-    req.body.address = req.body.name
+    req.body.address = req.body.name;
     delete req.body.name;
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");

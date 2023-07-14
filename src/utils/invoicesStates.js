@@ -1,8 +1,8 @@
 import moment from "moment";
-import { getConnection } from "../database/connection";
-import { contractsServices } from "../services/contracts";
-import { invoicesServices } from "../services/invoices";
-import { paymentServices } from "../services/payments";
+import { getConnection } from "./../database/connection.js";
+import { contractsServices } from "../services/contracts.js";
+import { invoicesServices } from "../services/invoices.js";
+import { paymentServices } from "../services/payments.js";
 
 // Esto esta en contracts Services,
 // la función busca los contratos

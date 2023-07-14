@@ -1,11 +1,9 @@
-import { getConnection } from "./../database/connection";
+import { getConnection } from "./../database/connection.js";
 
 const getPlans = async () => {
   try {
     const connection = await getConnection();
-    const result = await connection.query(
-      `SELECT * FROM plans`
-      );
+    const result = await connection.query(`SELECT * FROM plans`);
     return result;
   } catch (e) {
     return e.message;
@@ -28,9 +26,7 @@ const getPlan = async (id) => {
 const addPlan = async (data) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query(
-      `INSERT INTO plans SET ?`,
-      data);
+    const result = await connection.query(`INSERT INTO plans SET ?`, data);
     return result;
   } catch (e) {
     return e.message;
@@ -40,10 +36,10 @@ const addPlan = async (data) => {
 const updatePlan = async (id, data) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query(
-      `UPDATE plans SET ? WHERE id = ?`, 
-      [data,id]
-      );
+    const result = await connection.query(`UPDATE plans SET ? WHERE id = ?`, [
+      data,
+      id,
+    ]);
     return result;
   } catch (e) {
     return e.message;

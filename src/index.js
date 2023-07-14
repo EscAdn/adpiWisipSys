@@ -1,4 +1,4 @@
-import app from "./app";
+import app from "./app.js";
 import cron from "node-cron";
 import moment from "moment";
 import {
@@ -6,7 +6,7 @@ import {
   stateInvoices,
   statePaymentPromises,
   disableContracts,
-} from "./utils/invoicesStates";
+} from "./utils/invoicesStates.js";
 
 // Generar las Facturas, se ejecuta a la 1 A. M. todos los dias
 cron.schedule("0 1 * * *", async () => {

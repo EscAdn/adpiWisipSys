@@ -1,6 +1,6 @@
-import moment from "moment/moment";
-import { contractsServices } from "../services/contracts";
-import { errorMessage } from "../helpers/errorHelper";
+import moment from "moment";
+import { contractsServices } from "../services/contracts.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getContracts = async (req, resp) => {
   try {

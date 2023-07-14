@@ -1,5 +1,5 @@
-import { errorMessage } from "../helpers/errorHelper";
-import { verifyToken } from "../helpers/jwtHelper";
+import { errorMessage } from "../helpers/errorHelper.js";
+import { verifyToken } from "../helpers/jwtHelper.js";
 
 export const authValidate = async (req, res, next) => {
   try {

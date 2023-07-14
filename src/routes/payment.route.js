@@ -1,7 +1,16 @@
 import { Router } from "express";
-import { getPayments, getPayment, addPayment, updatePayment, deletePayment } from './../controllers/payments.controller'
-import {validateCreated, validateUpdate} from './../validators/payments.validators'
-import { validateAccessRol } from "./../midelwares/rol";
+import {
+  getPayments,
+  getPayment,
+  addPayment,
+  updatePayment,
+  deletePayment,
+} from "./../controllers/payments.controller.js";
+import {
+  validateCreated,
+  validateUpdate,
+} from "./../validators/payments.validators.js";
+import { validateAccessRol } from "./../midelwares/rol.js";
 
 const router = Router();
 

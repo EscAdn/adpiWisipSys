@@ -1,6 +1,6 @@
-import moment from "moment/moment";
-import { clientsServices } from "./../services/clients";
-import { errorMessage } from "../helpers/errorHelper";
+import moment from "moment";
+import { clientsServices } from "./../services/clients.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getClients = async (req, resp) => {
   try {
@@ -48,7 +48,7 @@ const updateClient = async (req, resp) => {
 const deleteClient = async (req, resp) => {
   try {
     const { id } = req.params;
-    const result = await clientsServices.deleteClient(id)
+    const result = await clientsServices.deleteClient(id);
     resp.json(result);
   } catch (e) {
     errorMessage(resp, e.errorMessage);

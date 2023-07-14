@@ -1,18 +1,18 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import config from "./config";
+import config from "./config.js";
 // Route
-import addressRoute from "./routes/address.route";
-import nodeRoute from "./routes/node.route";
-import clientRoute from "./routes/client.route";
-import planRoute from "./routes/plan.route";
-import contractRoute from "./routes/contract.route";
-import paymentRoute from "./routes/payment.route";
-import paymentTypeRoute from "./routes/paymentType.route";
-import invoiceRoute from "./routes/invoice.route";
-import billRoute from "./routes/bill.route";
-import usersRoute from "./routes/users.route";
+import addressRoute from "./routes/address.route.js";
+import nodeRoute from "./routes/node.route.js";
+import clientRoute from "./routes/client.route.js";
+import planRoute from "./routes/plan.route.js";
+import contractRoute from "./routes/contract.route.js";
+import paymentRoute from "./routes/payment.route.js";
+import paymentTypeRoute from "./routes/paymentType.route.js";
+import invoiceRoute from "./routes/invoice.route.js";
+import billRoute from "./routes/bill.route.js";
+import usersRoute from "./routes/users.route.js";
 
 const app = express();
 

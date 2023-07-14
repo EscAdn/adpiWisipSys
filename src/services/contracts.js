@@ -1,4 +1,4 @@
-import { getConnection } from "./../database/connection";
+import { getConnection } from "./../database/connection.js";
 
 // Obtiene los contratos que facturan en la fecha indicada
 // y no cuentan con factura generada del mes indicado
@@ -67,9 +67,7 @@ const getContract = async (id) => {
 const addContract = async (data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `INSERT INTO contracts SET ?`
-      , data);
+    const result = await conn.query(`INSERT INTO contracts SET ?`, data);
     return result;
   } catch (error) {
     return error.message;
@@ -79,8 +77,7 @@ const addContract = async (data) => {
 const updateContract = async (id, data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `UPDATE contracts SET ? WHERE id = ?`, [
+    const result = await conn.query(`UPDATE contracts SET ? WHERE id = ?`, [
       data,
       id,
     ]);

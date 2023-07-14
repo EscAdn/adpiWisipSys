@@ -1,6 +1,6 @@
-import { getFechas } from "../utils/invoicesStates";
-import { getConnection } from "./../database/connection";
-import { contractsServices } from "./contracts";
+import { getConnection } from "./../database/connection.js";
+import { getFechas } from "../utils/invoicesStates.js";
+import { contractsServices } from "./contracts.js";
 
 const getInvoices = async () => {
   try {
