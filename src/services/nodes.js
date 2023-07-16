@@ -4,7 +4,9 @@ const getNodes = async () => {
 	try {
 		const connection = await getConnection();
 		const result = await connection.query(
-			"SELECT a.address, n.* FROM `nodes` as n, `addresses` as a WHERE a.id = n.address_id;"
+			`SELECT a.address, n.* 
+			FROM nodes as n, addresses as a 
+			WHERE a.id = n.address_id;`
 			);
 		return result;
 	} catch (e) {
@@ -16,8 +18,13 @@ const getNode = async (id) => {
 	try {
 		const conn = await getConnection();
 		const result = await conn.query(
-			"SELECT * FROM `nodes` WHERE id = ?",
-			id
+			`SELECT a.address, 
+				n.* FROM nodes as n, 
+				addresses as a 
+				WHERE 
+				a.id = n.address_id 
+				AND n.id = ?`
+			, id
 			);
 		return result;
 	} catch(e) {
@@ -29,7 +36,7 @@ const addNode = async (data) => {
 	try {
 		const connection = await getConnection();
 		const result = await connection.query(
-			"INSERT INTO `nodes` SET ?", 
+			`INSERT INTO nodes SET ?`, 
 			data
 			);
 		return result;
@@ -43,7 +50,7 @@ const updateNode = async (id, data) => {
 
 		const connection = await getConnection();
 		const result = await connection.query(
-			"UPDATE `nodes` SET ? WHERE id = ?", 
+			`UPDATE nodes SET ? WHERE id = ?`, 
 			[data,id,]
 			);
 		return result;

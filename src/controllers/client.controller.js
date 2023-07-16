@@ -7,21 +7,17 @@ const getClients = async (req, resp) => {
     const result = await clientsServices.getClients();
     resp.json(result);
   } catch (e) {
-    errorMessage(res, e.errorMessage);
+    errorMessage(resp, e.errorMessage);
   }
 };
 
 const getClient = async (req, resp) => {
   try {
     const { id } = req.params;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `clients` WHERE id = ?",
-      id
-    );
+    const result = await clientsServices.getClient(id);
     resp.json(result);
   } catch (e) {
-    errorMessage(res, e.errorMessage);
+    errorMessage(resp, e.errorMessage);
   }
 };
 
@@ -30,12 +26,10 @@ const addClient = async (req, resp) => {
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
-
-    const connection = await getConnection();
-    const result = await connection.query("INSERT INTO `clients` SET ?", data);
+    const result = await clientsServices.addClient(data);
     resp.json(result);
   } catch (e) {
-    errorMessage(res, e.errorMessage);
+    errorMessage(resp, e.errorMessage);
   }
 };
 
@@ -44,28 +38,20 @@ const updateClient = async (req, resp) => {
     const { id } = req.params;
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
-    const connection = await getConnection();
-    const result = await connection.query(
-      "UPDATE `clients` SET ? WHERE id = ?",
-      [data, id]
-    );
+    const result = await clientsServices.updateClient(id, data);
     resp.json(result);
   } catch (e) {
-    errorMessage(res, e.errorMessage);
+    errorMessage(resp, e.errorMessage);
   }
 };
 
 const deleteClient = async (req, resp) => {
   try {
     const { id } = req.params;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "DELETE FROM clients WHERE id = ?",
-      id
-    );
+    const result = await clientsServices.deleteClient(id)
     resp.json(result);
   } catch (e) {
-    errorMessage(res, e.errorMessage);
+    errorMessage(resp, e.errorMessage);
   }
 };
 

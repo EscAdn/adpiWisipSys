@@ -6,10 +6,10 @@ import { validateAccessRol } from "./../midelwares/rol";
 const router = Router();
 
 // EndPoints
-router.get("/", validateAccessRol(["admin"]), getContracts);
-router.get("/:id", validateAccessRol(["admin"]), getContract);
-router.post("/", validateCreated, validateAccessRol(["admin"]), addContract);
-router.put("/:id", validateCreated, validateAccessRol(["admin"]), updateContract);
-router.delete("/:id", validateAccessRol(["admin"]), deleteContract);
+router.get("/", getContracts);
+router.get("/:id", getContract);
+router.post("/", validateCreated, addContract);
+router.put("/:id", validateCreated, updateContract);
+router.delete("/:id", deleteContract);
 
 export default router;

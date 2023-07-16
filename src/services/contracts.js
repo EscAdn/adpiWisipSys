@@ -2,28 +2,21 @@ import { getConnection } from "./../database/connection";
 
 // Obtiene los contratos que facturan en la fecha indicada
 // y no cuentan con factura generada del mes indicado
-const getContractsOfDate = async (day, now, contract_id = 0) => {
+const getContractsOfDate = async (year, mount, contract_id = 0) => {
   try {
     const conn = await getConnection();
     let result = [];
     if (contract_id === 0) {
       result = await conn.query(
-        `SELECT c.id FROM contracts c WHERE 
-				c.day_cut= ${day} 
-				AND NOT EXISTS 
-				(SELECT id FROM invoices 
-				WHERE invoices.from = '${now}' 
-				AND invoices.contract_id=c.id);`
+        `SELECT inv.* FROM invoices AS inv 
+        JOIN contracts AS c ON c.id = inv.contract_id 
+        WHERE inv.from LIKE "%${year}-${mount}%";`
       );
     } else {
       result = await conn.query(
-        `SELECT c.* FROM contracts c 
-				WHERE c.day_cut= ${day} 
-				AND c.id = ${contract_id} 
-				AND NOT EXISTS 
-				(SELECT id FROM invoices WHERE 
-				invoices.from = '${now}' 
-				AND invoices.contract_id=c.id);`
+        `SELECT inv.* FROM invoices AS inv 
+        JOIN contracts AS c ON c.id = inv.contract_id 
+        WHERE inv.from LIKE "%${year}-${mount}%" AND c.id = ${contract_id};`
       );
     }
     return result;
@@ -54,8 +47,15 @@ const getContracts = async () => {
 const getContract = async (id) => {
   try {
     const connection = await getConnection();
-    const result = await connectionquery(
-      `SELECT * FROM contracts WHERE id = ?`,
+    const result = await connection.query(
+      `SELECT c.*, cl.name as client, p.name as plan, 
+      p.price, a.address 
+      FROM contracts as c, clients as cl,
+      plans as p, addresses as a 
+      WHERE cl.id = c.client_id 
+      AND p.id=c.plan_id 
+      AND a.id=cl.address_id
+      AND c.id = ?`,
       id
     );
     return result;

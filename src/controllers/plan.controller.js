@@ -14,12 +14,7 @@ const getPlans = async (req, resp) => {
 const getPlan = async (req, resp) => {
   try {
     const { id } = req.params;
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT * FROM `plans` WHERE id = ?",
-      id
-      );
+    const result = await plansServices.getPlan(id);
     resp.json(result);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -32,9 +27,7 @@ const addPlan = async (req, resp) => {
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
-
-    const connection = await getConnection();
-    const result = await connection.query("INSERT INTO `plans` SET ?", data);
+    const result = await plansServices.addPlan(data)
     resp.json(result);
   } catch (e) {
     errorMessage(res, e.errorMessage);
@@ -46,12 +39,7 @@ const updatePlan = async (req, resp) => {
     const { id } = req.params;
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
-
-    const connection = await getConnection();
-    const result = await connection.query("UPDATE `plans` SET ? WHERE id = ?", [
-      data,
-      id,
-      ]);
+    const result = await plansServices.updatePlan(id, data);
     resp.json(result);
   } catch (e) {
     errorMessage(res, e.errorMessage);

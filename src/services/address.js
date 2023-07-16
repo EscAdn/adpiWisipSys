@@ -19,7 +19,8 @@ const getAddress = async (id) => {
 	try {
 		const conn = await getConnection();
 		const result = await conn.query(
-			`SELECT * 
+			`SELECT id, address as name, 
+			created_at, updated_at 
 			FROM addresses 
 			WHERE id = ?`
 			, id);

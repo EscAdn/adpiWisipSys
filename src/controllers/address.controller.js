@@ -23,6 +23,8 @@ const getAddress = async (req, resp) => {
 
 const addAddress = async (req, resp) => {
   try {
+    req.body.address = req.body.name
+    delete req.body.name;
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
@@ -36,6 +38,8 @@ const addAddress = async (req, resp) => {
 const updateAddress = async (req, resp) => {
   try {
     const { id } = req.params;
+    req.body.address = req.body.name;
+    delete req.body.name;
     let data = req.body;
     data.updated_at = moment().format("YYYY-MM-DD");
 
