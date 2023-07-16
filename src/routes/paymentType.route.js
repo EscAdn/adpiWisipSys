@@ -4,9 +4,9 @@ import {
   getPaymentType,
   addPaymentType,
   updategetPaymentType,
-} from "./../controllers/paymentsTypes.controller";
-import validateCreated from "../validators/paymentsTypes.validator";
-import { validateAccessRol } from "./../midelwares/rol";
+} from "./../controllers/paymentsTypes.controller.js";
+import validateCreated from "../validators/paymentsTypes.validator.js";
+import { validateAccessRol } from "./../midelwares/rol.js";
 
 const router = Router();
 

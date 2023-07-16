@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { getClient, getClients, addClient, updateClient, deleteClient } from "../controllers/client.controller";
-import validateCreated from "../validators/client.validator";
-import { validateAccessRol } from "./../midelwares/rol";
+import {
+  getClient,
+  getClients,
+  addClient,
+  updateClient,
+  deleteClient,
+} from "../controllers/client.controller.js";
+import validateCreated from "../validators/client.validator.js";
+import { validateAccessRol } from "./../midelwares/rol.js";
 
 const router = Router();
 

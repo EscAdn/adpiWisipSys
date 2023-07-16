@@ -1,9 +1,9 @@
-import moment from "moment/moment";
+import moment from "moment";
 import { matchedData } from "express-validator";
-import { encryp, compare } from "./../helpers/passwordHelper";
+import { encryp, compare } from "./../helpers/passwordHelper.js";
 import { userServices } from "../services/users.js";
-import { generateJWT } from "./../helpers/jwtHelper";
-import { errorMessage } from "./../helpers/errorHelper";
+import { generateJWT } from "./../helpers/jwtHelper.js";
+import { errorMessage } from "./../helpers/errorHelper.js";
 
 export const addUser = async (req, res) => {
   try {
@@ -34,7 +34,6 @@ export const addUser = async (req, res) => {
     delete user.password;
     user.id = result.insertId;
     
-    
     const data = {
       token: await generateJWT(user),
       user,
@@ -55,19 +54,19 @@ export const loginUser = async (req, res) => {
 
     if (result.length === 0) {
       errorMessage(res, "EMAIL_INCORRECT");
-      return
+      return;
     }
 
     if (result.err) {
       errorMessage(res, result.err);
-      return
+      return;
     }
-    console.log(result)
+    // console.log(result)
     const password = await compare(req.password, result[0].password);
 
     if (!password) {
       errorMessage(res, "PASSWORD_INCORRECT");
-      return
+      return;
     }
     delete result[0].password;
     delete result[0].telephone;

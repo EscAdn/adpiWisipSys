@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import validateResults from "../helpers/validateHelper";
+import validateResults from "./../helpers/validateHelper.js";
 
 const validateCreate = [
   check("address_id").exists().isNumeric(),

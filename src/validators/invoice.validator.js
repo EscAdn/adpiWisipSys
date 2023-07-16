@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import validateResults from "../helpers/validateHelper";
+import validateResults from "./../helpers/validateHelper.js";
 
 export const validateAddInvoice = [
   check("contract_id").exists().isNumeric(),
@@ -11,12 +11,21 @@ export const validateAddInvoice = [
 ];
 
 export const validateState = [
-  check("state").exists().isString()
-  .custom((value, { req }) => {
-      if (value === 'Activa' || value === 'Pagada' || value === 'Vencida' || value === 'Cancelada') {
+  check("state")
+    .exists()
+    .isString()
+    .custom((value, { req }) => {
+      if (
+        value === "Activa" ||
+        value === "Pagada" ||
+        value === "Vencida" ||
+        value === "Cancelada"
+      ) {
         return true;
       }
-      throw new Error("El estado debe ser 'Activa', 'Pagada', 'Vencida' o 'Cancelada'");
+      throw new Error(
+        "El estado debe ser 'Activa', 'Pagada', 'Vencida' o 'Cancelada'"
+      );
     }),
   (req, res, next) => {
     validateResults(req, res, next);

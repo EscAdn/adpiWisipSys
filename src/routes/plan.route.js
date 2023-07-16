@@ -1,7 +1,12 @@
 import { Router } from "express";
-import { getPlans, getPlan, addPlan, updatePlan } from "./../controllers/plan.controller";
-import validateCreated from "../validators/plan.validator";
-import { validateAccessRol } from "./../midelwares/rol";
+import {
+  getPlans,
+  getPlan,
+  addPlan,
+  updatePlan,
+} from "./../controllers/plan.controller.js";
+import validateCreated from "../validators/plan.validator.js";
+import { validateAccessRol } from "./../midelwares/rol.js";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import moment from "moment";
-import { paymentsTypesServices } from "./../services/paymentsTypes";
-import { errorMessage } from "../helpers/errorHelper";
+import { paymentsTypesServices } from "./../services/paymentsTypes.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getPaymentsTypes = async (req, res) => {
   try {

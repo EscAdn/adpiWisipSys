@@ -1,6 +1,6 @@
-import moment from "moment/moment";
-import { plansServices } from "./../services/plans";
-import { errorMessage } from "../helpers/errorHelper";
+import moment from "moment";
+import { plansServices } from "./../services/plans.js";
+import { errorMessage } from "../helpers/errorHelper.js";
 
 const getPlans = async (req, resp) => {
   try {
@@ -27,7 +27,7 @@ const addPlan = async (req, resp) => {
     let data = req.body;
     data.created_at = moment().format("YYYY-MM-DD");
     data.updated_at = moment().format("YYYY-MM-DD");
-    const result = await plansServices.addPlan(data)
+    const result = await plansServices.addPlan(data);
     resp.json(result);
   } catch (e) {
     errorMessage(res, e.errorMessage);

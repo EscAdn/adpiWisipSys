@@ -1,42 +1,40 @@
-import {getConnection} from "./../database/connection";
+import { getConnection } from "./../database/connection.js";
 
 const getAddresses = async () => {
-	try {
-		const conn = await getConnection();
-		const result = await conn.query(
-			`SELECT 
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `SELECT 
 			id, address as name, 
 			created_at, updated_at 
 			FROM addresses`
-			);
-		return result;
-	} catch(e) {
-		return e.message;
-	}
-}
+    );
+    return result;
+  } catch (e) {
+    return e.message;
+  }
+};
 
 const getAddress = async (id) => {
-	try {
-		const conn = await getConnection();
-		const result = await conn.query(
-			`SELECT id, address as name, 
+  try {
+    const conn = await getConnection();
+    const result = await conn.query(
+      `SELECT id, address as name, 
 			created_at, updated_at 
 			FROM addresses 
-			WHERE id = ?`
-			, id);
-		return result;
-	} catch(e) {
-		return e.message;
-	}
-}
+			WHERE id = ?`,
+      id
+    );
+    return result;
+  } catch (e) {
+    return e.message;
+  }
+};
 
 const addAddress = async (data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `INSERT INTO addresses SET ?`,
-      data
-    );
+    const result = await conn.query(`INSERT INTO addresses SET ?`, data);
     return result;
   } catch (e) {
     return e.message;
@@ -46,10 +44,10 @@ const addAddress = async (data) => {
 const updateAddress = async (id, data) => {
   try {
     const conn = await getConnection();
-    const result = await conn.query(
-      `UPDATE addresses SET ? WHERE id = ?`,
-      [data, id]
-    );
+    const result = await conn.query(`UPDATE addresses SET ? WHERE id = ?`, [
+      data,
+      id,
+    ]);
     return result;
   } catch (e) {
     return e.message;
@@ -57,8 +55,8 @@ const updateAddress = async (id, data) => {
 };
 
 export const addressesServices = {
-	getAddresses,
-	getAddress,
-	addAddress,
-	updateAddress
-}
+  getAddresses,
+  getAddress,
+  addAddress,
+  updateAddress,
+};

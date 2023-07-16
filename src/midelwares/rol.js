@@ -1,6 +1,6 @@
-import { errorMessage } from "../helpers/errorHelper";
-import { verifyToken } from "../helpers/jwtHelper";
-import { userServices } from "./../services/users";
+import { errorMessage } from "../helpers/errorHelper.js";
+import { verifyToken } from "../helpers/jwtHelper.js";
+import { userServices } from "./../services/users.js";
 
 export const validateAccessRol = (roles) => async (req, res, next) => {
   try {
@@ -14,12 +14,12 @@ export const validateAccessRol = (roles) => async (req, res, next) => {
     const tokenData = await verifyToken(token);
 
     const userData = await userServices.getUserById(tokenData.id);
-    
+
     if ([].concat(roles).includes(userData[0].roles)) {
       next();
     } else {
       errorMessage(res, "NOT_ACCESS_PERMIT");
-      return
+      return;
     }
   } catch (e) {
     errorMessage(res, e.message);

@@ -1,11 +1,10 @@
-import { getConnection } from "./../database/connection";
+import { getConnection } from "./../database/connection.js";
 
 const getUsers = async () => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, name, email, password, 
-      telephone, roles, created_at, updated_at FROM users`
+      `SELECT id, name, email, telephone, authorization, created_at, updated_at FROM users`
     );
     return result;
   } catch (e) {
@@ -17,7 +16,7 @@ const getUserExist = async (email) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, email, roles, created_at FROM users WHERE email = ?`,
+      `SELECT id, email, authorization, created_at FROM users WHERE email = ?`,
       email
     );
     return result;
@@ -30,7 +29,7 @@ const getUserById = async (id) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, email, roles, created_at FROM users WHERE id = ?`,
+      `SELECT id, email, authorization, created_at FROM users WHERE id = ?`,
       id
     );
     return result;
@@ -43,7 +42,7 @@ const getUser = async (email) => {
   try {
     const conn = await getConnection();
     const result = await conn.query(
-      `SELECT id, name, email, password, telephone, roles, created_at, updated_at FROM users WHERE email = ?`,
+      `SELECT id, name, email, password, telephone, authorization, created_at, updated_at FROM users WHERE email = ?`,
       email
     );
     return result;
@@ -64,23 +63,26 @@ const addUser = async (data) => {
 
 const updatedUser = async (id, data) => {
   try {
-    const conn = await getConnection()
-    const result = await conn.query(`UPDATE users SET ? WHERE id = ?`, [data, id])
-    return result
-  } catch(e) {
-    return {err: e.message}
+    const conn = await getConnection();
+    const result = await conn.query(`UPDATE users SET ? WHERE id = ?`, [
+      data,
+      id,
+    ]);
+    return result;
+  } catch (e) {
+    return { err: e.message };
   }
-}
+};
 
 const deleteUser = async (id) => {
   try {
-    const conn = await getConnection()
-    const result = await conn.query(`DELETE FROM users WHERE id = ?`, id)
-    return result
-  } catch(e) {
-    return {err: e.message}
+    const conn = await getConnection();
+    const result = await conn.query(`DELETE FROM users WHERE id = ?`, id);
+    return result;
+  } catch (e) {
+    return { err: e.message };
   }
-}
+};
 
 export const userServices = {
   addUser,
@@ -89,5 +91,5 @@ export const userServices = {
   getUserExist,
   getUserById,
   updatedUser,
-  deleteUser
+  deleteUser,
 };

@@ -1,6 +1,5 @@
-import validateResults from "../helpers/validateHelper";
-
-const { check } = require("express-validator");
+import { check } from "express-validator";
+import validateResults from "./../helpers/validateHelper.js";
 
 const validateCreated = [
   check("name").exists().isString().trim(),
