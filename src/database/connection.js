@@ -10,6 +10,6 @@ const connection = mysql.createConnection({
 });
 
 export const getConnection = () => {
-  console.log(connection);
+  // console.log(connection);
   return connection;
 };
