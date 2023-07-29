@@ -5,9 +5,9 @@ const getBills = async () => {
     const conn = await getConnection();
     const resut = await conn.query(
       `SELECT b.id, b.concept, b.payment_type_id, pt.type as pt_name, 
-			b.client_name, b.invoice, b.amount_incomes, b.amount_discharge, 
-			b.created_at, b.updated_at FROM bills as b, payment_types as pt 
-			WHERE pt.id = b.payment_type_id;`
+      b.client_name, b.amount_income, b.amount_discharge, b.created_at, 
+      b.updated_at FROM bills as b, payment_types as pt 
+      WHERE pt.id = b.payment_type_id;`
     );
     return resut;
   } catch (error) {
