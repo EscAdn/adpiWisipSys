@@ -3,9 +3,9 @@ import validateResults from "./../helpers/validateHelper.js";
 
 const validateCreated = [
   check("concept").exists().isString(),
-  check("payment_type_id").exists().isNumeric(),
+  check("payment_type_id").exists().isNumeric().optional(),
   check("client_name").isString().optional(),
-  check("amount_incomes").exists().isDecimal(),
+  check("amount_income").exists().isDecimal(),
   check("amount_discharge").exists().isDecimal(),
   check("invoice").isNumeric().optional(),
   (req, res, next) => {
