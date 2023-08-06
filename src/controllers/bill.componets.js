@@ -53,7 +53,6 @@ const addBill = async (req, res) => {
         }
       }
     }
-
     const resut = await buillsServices.addBill(data);
     res.json(resut);
   } catch (e) {
